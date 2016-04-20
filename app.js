@@ -15,6 +15,20 @@ var cfenv = require('cfenv');
 // create a new express server
 var app = express();
 
+var bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.get('/random.text', function (req, res) {
+        res.send('random.text');
+        });
+
+app.post('/test-post', function(req, res) {
+         var name = req.body.username;
+         console.log(req.body);
+         res.send("hello " + name);
+         });
+
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
 
