@@ -462,14 +462,18 @@ auth2 = gapi.auth2.getAuthInstance();
 
   $scope.enterPress = function(keyEvent) {
     if (keyEvent.which === 13) {
-      // var line = document.getElementById( 'TextArea' ).value;
+      /* enter pressed */
+      /* print line to console log */
       console.log( 'line=' + line );
+      /* reset line */
       line = "";
+      /* get request */
       $.get( 
         "/get",
         { line: line },
         function(data) {
-          console.log( callback );
+          /* lag callback result */
+          console.log( data );
         } 
       );
       console.log("enter pressed");
