@@ -271,8 +271,8 @@
         // $("button").click(function(){
         $.post("",
         {
-          name: "Donald Duck",
-          city: "Duckburg"
+          host: host,
+          port: port
         },
         function(data,status){
             alert("Data: " + data + "\nStatus: " + status);
