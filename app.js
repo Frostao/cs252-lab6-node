@@ -24,9 +24,10 @@ app.get('/random.text', function (req, res) {
         });
 
 app.post('/test-post', function(req, res) {
-         var name = req.body.username;
-         console.log(req.body);
-         res.send("hello " + name);
+         var host = req.body.host;
+         var port = req.body.port;
+         res.send("host is " + host);
+         res.send("port is " + port);
          });
 
 // serve the files out of ./public as our main files
