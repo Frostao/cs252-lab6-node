@@ -130,7 +130,7 @@
   <div class="md-toolbar-tools">  
        	<h3>Online ssh/sftp Server</h3>
  	<span flex></span>
-	<md-button class="md-primary md-raised" md-theme="green" onclick="signOut()"><span>Sign Out</span> </md-button>
+	<md-button class="md-raised md-primary" md-theme="green" onclick="signOut()"><span>Sign Out</span> </md-button>
 
 	<!--     <md-button aria-label="Search" ng-click="showSearch = !showSearch">
       <ng-md-icon icon="search"></ng-md-icon>
@@ -206,17 +206,19 @@
 				<!-- <md-content> Welcome! </md-content> -->
 		<!-- </div> -->
 
-		<md-toolbar>
-  			<div class="md-toolbar-tools">  
-       			<h3>Online ssh/sftp Server</h3>
- 			<span flex></span>
-			<h6>Welcome!</h6>
-			</div>
-			<md-toolbar>
-
+	
 
 		<div class="loginWrapper">
-					<form class="form">	
+			<md-toolbar>
+  			<div class="md-toolbar-tools">  
+       			<h1>Online ssh/sftp Server</h1>
+ 			<span flex></span>
+			<span>Welcome!</span>
+			</div>
+			</md-toolbar>
+	
+			
+			<form class="form">	
 				<input type="text" placeholder="host" id="host"><br>
 				<input type="text" placeholder="port" id="port"><br>
 				<div class="g-signin2" id="signIn" data-onsuccess="onSignIn"></div><br>
