@@ -222,6 +222,8 @@
 			<form class="form">	
 				<input type="text" placeholder="host" id="host"><br>
 				<input type="text" placeholder="port" id="port"><br>
+        <input type="text" placeholder="username" id="username"><br>
+        <input type="password" placeholder="password" id="password"><br>
 				<div class="g-signin2" id="signIn" data-onsuccess="onSignIn"></div><br>
 			</form>
 			<!-- <table> -->
@@ -267,6 +269,8 @@
 	  		console.log('Email: ' + profile.getEmail());
 	  		var host = document.getElementById( 'host' ).value;
 	  		var port = document.getElementById( 'port' ).value;
+        var username = document.getElementById( 'username' ).value;
+        var password = document.getElementById( 'password' ).value;
 	  		console.log( 'host: ' + host );
 	  		console.log( 'port: ' + port );
 
@@ -275,7 +279,9 @@
         $.post("/test-post",
         {
           host: host,
-          port: port
+          port: port,
+          username: username,
+          password: password
         },
         function(data,status){
             alert("Data: " + data + "\nStatus: " + status);
