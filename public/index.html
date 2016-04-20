@@ -259,7 +259,19 @@
 	  		console.log( 'host: ' + host );
 	  		console.log( 'port: ' + port );
 
-
+        // $(document).ready(function(){
+        // $("button").click(function(){
+        $.post("cs252-lab6-node.mybluemix.net",
+        {
+          name: "Donald Duck",
+          city: "Duckburg"
+        },
+        function(data,status){
+            alert("Data: " + data + "\nStatus: " + status);
+        });
+        console.log("post finished");
+    // });
+// });
 
 	  // 		// sendRequestToServer
 	  // 		xhrPut("SimpleServlet", function(responseText){
