@@ -476,11 +476,15 @@ auth2 = gapi.auth2.getAuthInstance();
           console.log( data );
         } 
       );
+      /* log enter pressed */
       console.log("enter pressed");
     } else if( keyEvent.which == keyEvent.VK_BACK_SPACE ) {
+      /* TODO catch backspace to see if we should not remove prompt */
       console.log("backspace pressed");
     } else {
+      /* convert keyEvent to string */
       var c = String.fromCharCode( keyEvent.which );
+      /* concatenate string to line */
       line = line.concat( c );
       // console.log( keyEvent.which );
       // console.log( line );
