@@ -438,6 +438,8 @@ auth2 = gapi.auth2.getAuthInstance();
 
   var app = angular.module('myApp', ['ngMaterial']);
 
+  var line = "";
+
   app.controller('AppCtrl', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
 
   // Load the data
@@ -445,9 +447,40 @@ auth2 = gapi.auth2.getAuthInstance();
   //   $scope.loremIpsum = res.data;
   //   $timeout(expand, 0);
   // });
+
+
+
+      
+               // $.get( 
+               //    "result.php",
+               //    { name: "Zara" },
+               //    function(data) {
+               //       $('#stage').html(data);
+               //    }
+               // );
+        
+
   $scope.enterPress = function(keyEvent) {
-    if (keyEvent.which === 13)
-      console.log("enter presses");
+    if (keyEvent.which === 13) {
+      // var line = document.getElementById( 'TextArea' ).value;
+      console.log( 'line=' + line );
+      line = "";
+      $.get( 
+        "/get",
+        { line: line },
+        function(data) {
+          console.log( callback );
+        } 
+      );
+      console.log("enter pressed");
+    } else if( keyEvent.which == keyEvent.VK_BACK_SPACE ) {
+      console.log("backspace pressed");
+    } else {
+      var c = String.fromCharCode( keyEvent.which );
+      line = line.concat( c );
+      // console.log( keyEvent.which );
+      // console.log( line );
+    }
   }
 
   $scope.autoExpand = function(e) {
