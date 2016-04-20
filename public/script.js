@@ -4,6 +4,7 @@ var auth2 = {};
 
 
 
+
 	function onSignIn(googleUser) {
 		refreshValues();
 		var profile = googleUser.getBasicProfile();
@@ -177,22 +178,32 @@ auth2 = gapi.auth2.getAuthInstance();
 
 
 
-
   /* TODO adjusting box */
 
-  var app = angular.module('myApp', ['ngMaterial']);
+  var app = angular.module('myApp', ['ngMaterial'])
+  .config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('indigo')
+    .accentPalette('light-blue')
+    .warnPalette('red')
+    .backgroundPalette('light-blue');
+  });
 
+    /* md-header */
+
+// angular.module('myApp', ['ngMaterial'])
+// .config(function($mdThemingProvider) {
+//   $mdThemingProvider.theme('default')
+//     .primaryPalette('pink')
+//     .accentPalette('orange');
+// });
+  
+  /* md-header */
+
+  /* line to store each line of textarea */
   var line = "";
 
   app.controller('AppCtrl', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
-
-  // Load the data
-  // $http.get('http://www.corsproxy.com/loripsum.net/api/plaintext').then(function(res) {
-  //   $scope.loremIpsum = res.data;
-  //   $timeout(expand, 0);
-  // });
-
-
 
       
                // $.get( 
@@ -247,22 +258,22 @@ auth2 = gapi.auth2.getAuthInstance();
 
 
   /* md-toolbar */
-  app.config(function($mdThemingProvider) {
-    var customBlueMap = 		$mdThemingProvider.extendPalette('light-blue', {
-      'contrastDefaultColor': 'light',
-      'contrastDarkColors': ['50'],
-      '50': 'ffffff'
-    });
-    $mdThemingProvider.definePalette('customBlue', customBlueMap);
-    $mdThemingProvider.theme('default')
-    .primaryPalette('customBlue', {
-      'default': '500',
-      'hue-1': '50'
-    })
-    .accentPalette('pink');
-    $mdThemingProvider.theme('input', 'default')
-    .primaryPalette('grey')
-  });
+  // app.config(function($mdThemingProvider) {
+  //   var customBlueMap = 		$mdThemingProvider.extendPalette('light-blue', {
+  //     'contrastDefaultColor': 'light',
+  //     'contrastDarkColors': ['50'],
+  //     '50': 'ffffff'
+  //   });
+  //   $mdThemingProvider.definePalette('customBlue', customBlueMap);
+  //   $mdThemingProvider.theme('default')
+  //   .primaryPalette('customBlue', {
+  //     'default': '500',
+  //     'hue-1': '50'
+  //   })
+  //   .accentPalette('pink');
+  //   $mdThemingProvider.theme('input', 'default')
+  //   .primaryPalette('grey')
+  // });
   /* md-toolbar */
 
 
