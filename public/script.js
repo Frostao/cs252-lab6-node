@@ -40,27 +40,9 @@ var auth2 = {};
           } else {
             prompt = "prompt-> ";
           }
-          if( !document.getElementById("TextArea").value ) {
+          if( !document.getElementById("TextArea").value || document.getElementById("TextArea").value.indexOf(prompt) == -1 ) {
             document.getElementById("TextArea").value += prompt;
           }
-    // });
-// });
-
-	  // 		// sendRequestToServer
-	  // 		xhrPut("SimpleServlet", function(responseText){
-			// var mytitle = document.getElementById('message');
-			// 	mytitle.innerHTML = responseText;
-			// }, function(err){
-			// console.log(err);
-			// });
-
-			// xhrPut( host );
-			console.log('past xhrPut');
-
-
-
-
-
 			document.getElementById( 'user' ).innerHTML =  'Hello, ' + profile.getName();
 		}
 		function signOut() {
@@ -278,8 +260,13 @@ jQuery(function($) {
           if( data ) {
             document.getElementById( "TextArea" ).value += data;
           }
-        } 
-      );
+        }
+      ).done( function() {
+          console.log( "jQuery done" );
+      })
+      .fail( function() {
+          console.log( "jQuery failed" );
+      }) ;
       line = "";
       
       /* log enter pressed */
