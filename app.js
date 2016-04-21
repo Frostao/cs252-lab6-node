@@ -19,13 +19,33 @@ var bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+var HashTable = require('hashtable');
+var hashtable = new HashTable();
+
+
 app.get('/random.text', function (req, res) {
 	res.send('random.text');
 });
 
 app.get('/get', function(req, res) {
+	var user = req.query.user;
 	var cmd = req.query.line;
-	console.log(cmd);
+	var conn = hashtable.get(user);
+	if (conn) {
+		conn.exec(cmd, function(err, stream) {
+			if (err) throw err;
+			stream.on('close', function(code, signal) {
+				console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
+				//conn.end();
+			}).on('data', function(data) {
+				res.send(data);
+				console.log('STDOUT: ' + data);
+			}).stderr.on('data', function(data) {
+				console.log('STDERR: ' + data);
+			});
+		});
+	}
+	console.log(user);
 });
 
 app.post('/test-post', function(req, res) {
@@ -33,6 +53,7 @@ app.post('/test-post', function(req, res) {
 	var port = req.body.port;
 	var username = req.body.username;
 	var password = req.body.password;
+	var user = req.body.user;
 
 	var Client = require('ssh2').Client;
 
@@ -43,7 +64,7 @@ app.post('/test-post', function(req, res) {
 			if (err) throw err;
 			stream.on('close', function(code, signal) {
 				console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
-				conn.end();
+				//conn.end();
 			}).on('data', function(data) {
 				res.send(data);
 				console.log('STDOUT: ' + data);
@@ -57,6 +78,7 @@ app.post('/test-post', function(req, res) {
 		username: username,
 		password: password
 	});
+	hashtable.put(user, conn);
 });
 
 // serve the files out of ./public as our main files

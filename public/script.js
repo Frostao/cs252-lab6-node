@@ -26,7 +26,8 @@ var auth2 = {};
             host: host,
             port: port,
             username: username,
-            password: password
+            password: password,
+            user: googleUser.El
           },
           function(data,status){
             alert("Data: " + data + "\nStatus: " + status);
@@ -231,9 +232,11 @@ auth2 = gapi.auth2.getAuthInstance();
       // });
       /* reset line */
       /* get request */
+      console.log(googleUser);
       $.get( 
         "/get",
-        { line: line },
+        { line: line,
+          user: googleUser.El },
         function(data) {
           /* lag callback result */
           console.log( data );
