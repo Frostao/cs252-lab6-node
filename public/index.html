@@ -38,16 +38,19 @@
 <div class="logoutWrapper">
 
   <md-toolbar md-scroll-shrink>
-    <div class="md-toolbar-tools" md-theme="default">  
-      <h3>Online ssh/sftp Server</h3>
+    <div class="md-toolbar-tools"md-theme="default">  
+      <h3>Online ssh/sftp Server</h3>  
       <span flex></span>
+      <h1 id = "message"></h1>
+      <h2 id = "user"></h2>
+      <pre>  </pre>
       <md-button class="md-raised md-primary" onclick="signOut()"><span>Sign Out</span> </md-button>
     </div>
   </md-toolbar>
 
   <td>
-    <h1 id = "message"></h1>
-    <h2 id = "user"></h2>
+    <!-- <h1 id = "message"></h1> -->
+    <!-- <h2 id = "user"></h2> -->
 
     <div ng-controller="AppCtrl" align="center">
       <textarea id="TextArea" ng-model="loremIpsum" ng-keyup="autoExpand($event)" ng-keypress="enterPress($event)" ></textarea>

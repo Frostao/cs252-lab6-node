@@ -257,8 +257,16 @@ $scope.setCaretToPos = function() {
       /* enter pressed */
       /* print line to console log */
       console.log( 'line=' + line );
+      // $http({
+      //   method: 'POST',
+      //   url: '/command',
+      //   data: {line: line}
+      // }).then(function successCallback(response) {
+      //   console.log(data);
+      // }, function errorCallback(response) {
+
+      // });
       /* reset line */
-      line = "";
       /* get request */
       $.get( 
         "/get",
@@ -268,6 +276,10 @@ $scope.setCaretToPos = function() {
           console.log( data );
         } 
       );
+      line = "";
+      
+      
+
       /* log enter pressed */
       console.log("enter pressed");
 
