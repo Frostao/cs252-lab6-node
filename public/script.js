@@ -244,6 +244,13 @@ jQuery(function($) {
       /* print line to console log */
       console.log( 'line=' + line );
 
+      if( line.localeCompare("clear") == 0 ) {
+        document.getElementById( "TextArea" ).value = prompt;
+        console.log("clear");
+        line = "";
+        return;
+      }
+
       /* prevent the cursor from moving down */
       keyEvent.preventDefault();
       /* instead of default, just tack on a new line before adding the prompt */
