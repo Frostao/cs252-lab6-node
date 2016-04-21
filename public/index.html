@@ -78,12 +78,6 @@
 
 
 <script>
-    // function onSuccess(googleUser) {
-      // console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-    // }
-    // function onFailure(error) {
-      // console.log(error);
-    // }
     function renderButton() {
       gapi.signin2.render('my-signin2', {
         'width': 240,
@@ -91,8 +85,6 @@
         'longtitle': true,
         'theme': 'dark',
         'onsuccess': onSignIn
-        // 'margin': auto
-        // 'onfailure': onFailure
       });
     }
   </script>

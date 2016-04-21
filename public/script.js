@@ -31,6 +31,9 @@ var auth2 = {};
           },
           function(data,status){
             alert("Data: " + data + "\nStatus: " + status);
+          }).fail( function() {
+            console.log( "jQuery post failed" );
+            document.getElementById("TextArea").value = "noServerConnection";
           });
           console.log("post finished");
 
@@ -263,16 +266,18 @@ jQuery(function($) {
         }
       ).done( function() {
           console.log( "jQuery done" );
+          document.getElementById("TextArea").value += prompt;
       })
       .fail( function() {
           console.log( "jQuery failed" );
+          document.getElementById("TextArea").value += prompt;
       }) ;
       line = "";
       
       /* log enter pressed */
       console.log("enter pressed");
       /* print prompt to text area */
-      document.getElementById("TextArea").value += prompt;
+      // document.getElementById("TextArea").value += prompt;
 
     } else {
       /* convert keyEvent to string */
