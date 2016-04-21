@@ -296,6 +296,8 @@ jQuery(function($) {
 
       /* prevent the cursor from moving down */
       keyEvent.preventDefault();
+      /* instead of default, just tack on a new line before adding the prompt */
+      document.getElementById( "TextArea" ).value += "\n";
 
       /* reset line */
       /* get request */
@@ -309,7 +311,7 @@ jQuery(function($) {
           /* lag callback result */
           console.log( data );
           if( data ) {
-            document.getElementById( "TextArea" ).value += "\n" + data;
+            document.getElementById( "TextArea" ).value += data;
           }
         } 
       );
