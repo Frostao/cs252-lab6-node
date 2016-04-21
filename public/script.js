@@ -250,43 +250,8 @@ jQuery(function($) {
 });
 
 
-
+  /* app controller */
   app.controller('AppCtrl', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
-
-      
-               // $.get( 
-               //    "result.php",
-               //    { name: "Zara" },
-               //    function(data) {
-               //       $('#stage').html(data);
-               //    }
-               // );
-
-
-
-// $scope.caretPos = 6;
-
-// $scope.setSelectionRange = function(input, selectionStart, selectionEnd) {
-//     if (input.setSelectionRange) {
-//       input.focus();
-//       input.setSelectionRange(selectionStart, selectionEnd);
-//     }
-//     else if (input.createTextRange) {
-//       var range = input.createTextRange();
-//       range.collapse(true);
-//       range.moveEnd('character', selectionEnd);
-//       range.moveStart('character', selectionStart);
-//       range.select();
-//     }
-// };
-
-// $scope.setCaretToPos = function() {
-//      $scope.setSelectionRange(document.getElementById("myTextArea"), $scope.caretPos, $scope.caretPos);
-// };
-
-
-
-        
 
   $scope.enterPress = function(keyEvent) {
     if (keyEvent.which === 13) {
@@ -316,36 +281,17 @@ jQuery(function($) {
         } 
       );
       line = "";
-
-      // document.getElementById( "TextArea" ).value += "\nDocuments\nUsers\n";
       
-      // setCaretToPos( "TextArea", 0 );
-
       /* log enter pressed */
       console.log("enter pressed");
-
-      // prompt = "prompt-> ";
-      // console.log( document.getElementById("TextArea").value.charCodeAt(document.getElementById("TextArea").value.length ) );
-      // document.getElementById("TextArea").value = document.getElementById("TextArea").value.replace(/\n$/, "");   //.slice(0, -1);
-      // console.log( document.getElementById("TextArea").value.charCodeAt( document.getElementById("TextArea").value.length ) );
-      // if (document.getElementById("TextArea").setSelectionRange) {
-      // document.getElementById("TextArea").focus();
-      // document.getElementById("TextArea").setSelectionRange(0, document.getElementById("TextArea").value.length - 2 );
-      // }
-      console.log(document.getElementById("TextArea").value+":");
-      // document.getElementById( "TextArea" ).value += '\n';
+      /* print prompt to text area */
       document.getElementById("TextArea").value += prompt;
 
-    } else if( keyEvent.which == keyEvent.VK_BACK_SPACE ) {
-      /* TODO catch backspace to see if we should not remove prompt */
-      console.log("backspace pressed");
     } else {
       /* convert keyEvent to string */
       var c = String.fromCharCode( keyEvent.which );
       /* concatenate string to line */
       line = line.concat( c );
-      // console.log( keyEvent.which );
-      // console.log( line );
     }
   }
 
@@ -390,136 +336,3 @@ jQuery(function($) {
 
 
   /* TODO header */
-
-/*
- * HeadsUp 1.5.6
- * @author Kyle Foster (@hkfoster)
- * @license MIT
- */
- ;
- (function(window, document, undefined) {
-
-  'use strict';
-
-  // Extend function
-  function extend(a, b) {
-    for (var key in b) {
-      if (b.hasOwnProperty(key)) {
-        a[key] = b[key];
-      }
-    }
-    return a;
-  }
-
-  // Throttle function (http://bit.ly/1eJxOqL)
-  function throttle(fn, threshhold, scope) {
-    threshhold || (threshhold = 250);
-    var previous, deferTimer;
-    return function() {
-      var context = scope || this,
-      current = Date.now(),
-      args = arguments;
-      if (previous && current < previous + threshhold) {
-        clearTimeout(deferTimer);
-        deferTimer = setTimeout(function() {
-          previous = current;
-          fn.apply(context, args);
-        }, threshhold);
-      } else {
-        previous = current;
-        fn.apply(context, args);
-      }
-    };
-  }
-
-  // Class management functions
-  function classReg(className) {
-    return new RegExp('(^|\\s+)' + className + '(\\s+|$)');
-  }
-
-  function hasClass(el, cl) {
-    return classReg(cl).test(el.className);
-  }
-
-  function addClass(el, cl) {
-    if (!hasClass(el, cl)) {
-      el.className = el.className + ' ' + cl;
-    }
-  }
-
-  function removeClass(el, cl) {
-    el.className = el.className.replace(classReg(cl), ' ');
-  }
-
-  // Main function definition
-  function headsUp(selector, options) {
-    this.selector = document.querySelector(selector);
-    this.options = extend(this.defaults, options);
-    this.init();
-  }
-
-  // Overridable defaults
-  headsUp.prototype = {
-    defaults: {
-      delay: 300,
-      sensitivity: 20
-    },
-
-    // Init function
-    init: function(selector) {
-
-      var self = this,
-      options = self.options,
-      selector = self.selector,
-      oldScrollY = 0,
-      winHeight;
-
-      // Resize handler function
-      function resizeHandler() {
-        winHeight = window.innerHeight;
-        return winHeight;
-      }
-
-      // Scroll handler function
-      function scrollHandler() {
-
-        // Scoped variables
-        var newScrollY = window.pageYOffset,
-        docHeight = document.body.scrollHeight,
-        pastDelay = newScrollY > options.delay,
-        goingDown = newScrollY > oldScrollY,
-        fastEnough = newScrollY < oldScrollY - options.sensitivity,
-        rockBottom = newScrollY < 0 || newScrollY + winHeight >= docHeight;
-
-        // Where the magic happens
-        if (pastDelay && goingDown) {
-          addClass(selector, 'heads-up');
-        } else if (!goingDown && fastEnough && !rockBottom || !pastDelay) {
-          removeClass(selector, 'heads-up');
-        }
-
-        // Keep on keeping on
-        oldScrollY = newScrollY;
-      }
-
-      // Attach listeners
-      if (selector) {
-
-        // Trigger initial resize
-        resizeHandler();
-
-        // Resize function listener
-        window.addEventListener('resize', throttle(resizeHandler), false);
-
-        // Scroll function listener
-        window.addEventListener('scroll', throttle(scrollHandler, 100), false);
-      }
-    }
-  };
-
-  window.headsUp = headsUp;
-
-})(window, document);
-
-// Instantiate HeadsUp
-new headsUp('.main-header');
