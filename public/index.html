@@ -53,7 +53,7 @@
     <!-- <h2 id = "user"></h2> -->
 
     <div ng-controller="AppCtrl" align="center">
-      <textarea id="TextArea" ng-model="loremIpsum" ng-keyup="autoExpand($event)" ng-keypress="enterPress($event)" ></textarea>
+    <textarea class='AutoExpand' rows='3' data-min-rows='1' placeholder='Auto-Expanding Textarea' id="TextArea" ng-model="loremIpsum" ng-keyup="autoExpand($event)" ng-key press="enterPress($event)"></textarea>
     </div>
   </td>
 </div>
@@ -80,6 +80,23 @@
 <script type="text/javascript">
 
 /* put java script here */
+
+$(document)
+	.one('focus.textarea', '.AutoExpand', function(){
+		var savedValue = this.value;
+		this.value = '';
+		this.baseScrollHeight = this.scrollHeight;
+		this.value = savedValue;
+		})
+		.on('input.textarea', '.AutoExpand', function()
+		{
+		var minRows = this.getAttribute('data-min-rows')|0,
+		rows;
+		this.rows = minRows;
+		console.log(this.scrollHeight , this.baseScrollHeight);
+		rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
+		this.rows = minRows + rows;
+		});
 
 </script>
 <script src="https://apis.google.com/js/client:platform.js?onload=startApp"></script>

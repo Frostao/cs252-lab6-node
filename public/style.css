@@ -17,17 +17,18 @@
  	height: 100%;
  	text-align: center;
  	background-color: #3b4b54;
+
  }
 
 /* md-toolbar */
 
 .md-select.default {
-    background-color: #000000;
+	background-color: #000000;
 }
 /* md-toolbar */
 
  .main-header {
-  position: fixed;
+  position: fixed !important;
   left: 0;
   top: 0;
   width: 100%;
@@ -71,12 +72,17 @@
 
 
 
- textarea {
- 	width: 100%;
- 	height: auto;
- 	vertical-align: middle;
- 	min-height: 500px;
- 	color: #009900;
+textarea {
+ 	
+	resize: none;
+	/*box-sizing: padding-box;
+ 	/*overflow: hidden;
+	*/
+	width: 100%;
+	vertical-align: middle;
+ 	min-height: 1000px;
+	max-height: 1000px;
+	color: #009900;
  	background: #000000;
  	font-family:'Ubuntu', Helvetica, Arial, sans-serif;
  	border-radius:3px;
@@ -84,13 +90,16 @@
  	font-weight:400;
   	font-size:30px;
   	border:none;
-  	padding: 10px;
- 	-webkit-transition: height 2s ease;
- 	-moz-transition: height 2s ease;
- 	-ms-transition: height 2s ease;
- 	-o-transition: height 2s ease;
- 	transition: height 2s ease;
+  	padding: 10px; 
+	
+
+	/*-webkit-transition: height 1s ease;
+ 	-moz-transition: height 1s ease;
+ 	-ms-transition: height 1s ease;
+ 	-o-transition: height 1s ease;
+ 	transition: height 1s ease; */
  }
+
 
  * {
   -webkit-font-smoothing: antialiased !important;
