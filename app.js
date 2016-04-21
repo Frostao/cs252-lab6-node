@@ -23,6 +23,11 @@ app.get('/random.text', function (req, res) {
 	res.send('random.text');
 });
 
+app.get('/get', function(req, res) {
+	var cmd = req.query.line;
+	console.log(cmd);
+});
+
 app.post('/test-post', function(req, res) {
 	var host = req.body.host;
 	var port = req.body.port;
