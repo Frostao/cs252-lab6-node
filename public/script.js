@@ -3,7 +3,7 @@ var auth2 = {};
 
 
 
-
+  var prompt = "\n";
 
 	function onSignIn(googleUser) {
 		refreshValues();
@@ -32,6 +32,14 @@ var auth2 = {};
             alert("Data: " + data + "\nStatus: " + status);
           });
           console.log("post finished");
+
+          
+          if( host ) {
+            prompt = prompt + host + "-> ";
+          } else {
+            prompt += "prompt-> ";
+          }
+          document.getElementById("TextArea").value += prompt;
     // });
 // });
 
@@ -200,6 +208,13 @@ auth2 = gapi.auth2.getAuthInstance();
   
   /* md-header */
 
+
+
+
+
+
+
+
   /* line to store each line of textarea */
   var line = "";
 
@@ -213,6 +228,28 @@ auth2 = gapi.auth2.getAuthInstance();
                //       $('#stage').html(data);
                //    }
                // );
+
+
+
+$scope.caretPos = 6;
+
+$scope.setSelectionRange = function(input, selectionStart, selectionEnd) {
+    if (input.setSelectionRange) {
+      input.focus();
+      input.setSelectionRange(selectionStart, selectionEnd);
+    }
+    else if (input.createTextRange) {
+      var range = input.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', selectionEnd);
+      range.moveStart('character', selectionStart);
+      range.select();
+    }
+};
+
+$scope.setCaretToPos = function() {
+     $scope.setSelectionRange(document.getElementById("myTextArea"), $scope.caretPos, $scope.caretPos);
+};
         
 
   $scope.enterPress = function(keyEvent) {
@@ -233,6 +270,19 @@ auth2 = gapi.auth2.getAuthInstance();
       );
       /* log enter pressed */
       console.log("enter pressed");
+
+      // prompt = "prompt-> ";
+      // console.log( document.getElementById("TextArea").value.charCodeAt(document.getElementById("TextArea").value.length ) );
+      // document.getElementById("TextArea").value = document.getElementById("TextArea").value.replace(/\n$/, "");   //.slice(0, -1);
+      // console.log( document.getElementById("TextArea").value.charCodeAt( document.getElementById("TextArea").value.length ) );
+      // if (document.getElementById("TextArea").setSelectionRange) {
+      // document.getElementById("TextArea").focus();
+      // document.getElementById("TextArea").setSelectionRange(0, document.getElementById("TextArea").value.length - 2 );
+      // }
+      console.log(document.getElementById("TextArea").value+":");
+      // document.getElementById( "TextArea" ).value += '\n';
+      document.getElementById("TextArea").value += prompt;
+
     } else if( keyEvent.which == keyEvent.VK_BACK_SPACE ) {
       /* TODO catch backspace to see if we should not remove prompt */
       console.log("backspace pressed");
