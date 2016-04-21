@@ -298,7 +298,7 @@ auth2 = gapi.auth2.getAuthInstance();
       );
       line = "";
 
-      document.getElementById( "TextArea" ).value += "\nDocuments\nUsers\n";
+      // document.getElementById( "TextArea" ).value += "\nDocuments\nUsers\n";
       
       // setCaretToPos( "TextArea", 0 );
 
