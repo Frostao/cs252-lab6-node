@@ -230,9 +230,26 @@ auth2 = gapi.auth2.getAuthInstance();
 // });
 
 
+/* line to store each line of textarea */
+var line = "";
 
-  /* line to store each line of textarea */
-  var line = "";
+
+jQuery(function($) {
+  var input = $('#TextArea');
+  input.on('keydown', function() {
+    var key = event.keyCode || event.charCode;
+    if( key == 8 || key == 46 ) {
+        /* backspace was pressed */
+        if( !line ) {
+          return false;
+        } else {
+          line = line.slice( 0, -1 );
+        }
+    }
+  });
+});
+
+
 
   app.controller('AppCtrl', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
 
