@@ -20,6 +20,10 @@
 
  }
 
+
+.form {
+	margin: auto;
+}
 /* md-toolbar */
 
 .md-select.default {
@@ -199,20 +203,47 @@ textarea {
 
 
 	#signIn {
-		position: relative;
+		/*position: relative;*/
 		margin: auto;
-		margin-left: auto;
-		margin-right: auto;
+		/*margin-left: auto;*/
+		/*margin-bottom: right: auto;*/
 		width: 75%;
-		background-color: #000000
-		center: 1000%;
+		/*background-color: #000000;*/
+		text-align: center;
+		align-self: center;
 	}
 
 
 
 
+	.g-signin2 {
+		margin: auto;
+		text-align: center;
+		align-self: center;
+		align-items: center;
+		align-content: center;
+		width: 100%;
+	}
 
+	.my-signin2 {
+		margin: auto;
+		text-align: center;
+		align-self: center;
+		align-items: center;
+		align-content: center;
+		display: inline-block;
+		/*float: left;*/
+	}
 
+	#my-signin2 {
+		margin: auto;
+		text-align: center;
+		align-self: center;
+		align-items: center;
+		align-content: center;
+		display: inline-block;
+		/*float: left;*/
+	}
 
 
 

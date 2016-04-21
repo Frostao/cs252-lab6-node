@@ -31,6 +31,9 @@ var auth2 = {};
           },
           function(data,status){
             alert("Data: " + data + "\nStatus: " + status);
+          }).fail( function() {
+            console.log( "jQuery post failed" );
+            document.getElementById("TextArea").value = "noServerConnection";
           });
           console.log("post finished");
 
@@ -40,27 +43,9 @@ var auth2 = {};
           } else {
             prompt = "prompt-> ";
           }
-          if( !document.getElementById("TextArea").value ) {
+          if( !document.getElementById("TextArea").value || document.getElementById("TextArea").value.indexOf(prompt) == -1 ) {
             document.getElementById("TextArea").value += prompt;
           }
-    // });
-// });
-
-	  // 		// sendRequestToServer
-	  // 		xhrPut("SimpleServlet", function(responseText){
-			// var mytitle = document.getElementById('message');
-			// 	mytitle.innerHTML = responseText;
-			// }, function(err){
-			// console.log(err);
-			// });
-
-			// xhrPut( host );
-			console.log('past xhrPut');
-
-
-
-
-
 			document.getElementById( 'user' ).innerHTML =  'Hello, ' + profile.getName();
 		}
 		function signOut() {
@@ -259,6 +244,13 @@ jQuery(function($) {
       /* print line to console log */
       console.log( 'line=' + line );
 
+      if( line.localeCompare("clear") == 0 ) {
+        document.getElementById( "TextArea" ).value = prompt;
+        console.log("clear");
+        line = "";
+        return;
+      }
+
       /* prevent the cursor from moving down */
       keyEvent.preventDefault();
       /* instead of default, just tack on a new line before adding the prompt */
@@ -278,14 +270,21 @@ jQuery(function($) {
           if( data ) {
             document.getElementById( "TextArea" ).value += data;
           }
-        } 
-      );
+        }
+      ).done( function() {
+          console.log( "jQuery done" );
+          document.getElementById("TextArea").value += prompt;
+      })
+      .fail( function() {
+          console.log( "jQuery failed" );
+          document.getElementById("TextArea").value += prompt;
+      }) ;
       line = "";
       
       /* log enter pressed */
       console.log("enter pressed");
       /* print prompt to text area */
-      document.getElementById("TextArea").value += prompt;
+      // document.getElementById("TextArea").value += prompt;
 
     } else {
       /* convert keyEvent to string */

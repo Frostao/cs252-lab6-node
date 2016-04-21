@@ -30,21 +30,12 @@ app.get('/random.text', function (req, res) {
 app.get('/get', function(req, res) {
 	var user = req.query.user;
 	var cmd = req.query.line;
-	var conn = hashtable.get(user);
-	if (conn) {
-		conn.exec(cmd, function(err, stream) {
-			if (err) throw err;
-			stream.on('close', function(code, signal) {
-				console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
-				//conn.end();
-			}).on('data', function(data) {
-				res.send(data);
-				console.log('STDOUT: ' + data);
-			}).stderr.on('data', function(data) {
-				console.log('STDERR: ' + data);
-			});
-		});
+	var conn = hashtable.get(user).conn;
+	var stream = hashtable.get(user).stream;
+	if (stream) {
+		res.send("ff");
 	}
+	console.log(conn.shell);
 	console.log(user);
 });
 
@@ -60,17 +51,22 @@ app.post('/test-post', function(req, res) {
 	var conn = new Client();
 	conn.on('ready', function() {
 		console.log('Client :: ready');
-		conn.exec('ls', function(err, stream) {
+		conn.shell(function(err, stream) {
 			if (err) throw err;
-			stream.on('close', function(code, signal) {
-				console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
+			stream.on('close', function() {
+				console.log('Stream :: close');
 				//conn.end();
 			}).on('data', function(data) {
-				res.send(data);
 				console.log('STDOUT: ' + data);
 			}).stderr.on('data', function(data) {
 				console.log('STDERR: ' + data);
 			});
+			hashtable.put(user, {
+				conn: conn,
+				stream: stream
+			});
+			stream.write('cd cs252\n');
+			stream.write('ls\n');
 		});
 	}).connect({
 		host: host,
@@ -78,7 +74,7 @@ app.post('/test-post', function(req, res) {
 		username: username,
 		password: password
 	});
-	hashtable.put(user, conn);
+
 });
 
 // serve the files out of ./public as our main files

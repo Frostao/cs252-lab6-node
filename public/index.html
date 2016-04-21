@@ -72,8 +72,25 @@
     <input type="text" placeholder="port" id="port"><br>
     <input type="text" placeholder="username" id="username"><br>
     <input type="password" placeholder="password" id="password"><br>
-    <div class="g-signin2" id="signIn" data-onsuccess="onSignIn" ng-keyprees="$event.which === 13")></div><br>
+      <div class="my-signin2" id="my-signin2" data-onsuccess="onSignIn" ng-keyprees="$event.which === 13"></div><br>
   </form>
+
+
+
+<script>
+    function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSignIn
+      });
+    }
+  </script>
+
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
 </div>
 
 
