@@ -3,7 +3,7 @@ var auth2 = {};
 
 
 
-  var prompt = "\n";
+  var prompt;
 
 	function onSignIn(googleUser) {
 		refreshValues();
@@ -36,11 +36,13 @@ var auth2 = {};
 
           
           if( host ) {
-            prompt = prompt + host + "-> ";
+            prompt = host + "-> ";
           } else {
-            prompt += "prompt-> ";
+            prompt = "prompt-> ";
           }
-          document.getElementById("TextArea").value += prompt;
+          if( !document.getElementById("TextArea").value ) {
+            document.getElementById("TextArea").value += prompt;
+          }
     // });
 // });
 
@@ -212,7 +214,20 @@ auth2 = gapi.auth2.getAuthInstance();
 
 
 
-
+// jQuery(document).ready(function($) {
+//     var max = 4;
+//     $('textarea').keypress(function(e) {
+//         console.log( "jQuery: " + e.which );
+//         /* if enter is pressed, prevent the default */
+//         if (e.which == 13) {
+//             console.log( "jQuery: " + e.which );
+//             // e.preventDefault();
+//         } else if (this.value.length > max) {
+//             // Maximum exceeded
+//             // this.value = this.value.substring(0, max);
+//         }
+//     });
+// });
 
 
 
@@ -232,25 +247,28 @@ auth2 = gapi.auth2.getAuthInstance();
 
 
 
-$scope.caretPos = 6;
+// $scope.caretPos = 6;
 
-$scope.setSelectionRange = function(input, selectionStart, selectionEnd) {
-    if (input.setSelectionRange) {
-      input.focus();
-      input.setSelectionRange(selectionStart, selectionEnd);
-    }
-    else if (input.createTextRange) {
-      var range = input.createTextRange();
-      range.collapse(true);
-      range.moveEnd('character', selectionEnd);
-      range.moveStart('character', selectionStart);
-      range.select();
-    }
-};
+// $scope.setSelectionRange = function(input, selectionStart, selectionEnd) {
+//     if (input.setSelectionRange) {
+//       input.focus();
+//       input.setSelectionRange(selectionStart, selectionEnd);
+//     }
+//     else if (input.createTextRange) {
+//       var range = input.createTextRange();
+//       range.collapse(true);
+//       range.moveEnd('character', selectionEnd);
+//       range.moveStart('character', selectionStart);
+//       range.select();
+//     }
+// };
 
-$scope.setCaretToPos = function() {
-     $scope.setSelectionRange(document.getElementById("myTextArea"), $scope.caretPos, $scope.caretPos);
-};
+// $scope.setCaretToPos = function() {
+//      $scope.setSelectionRange(document.getElementById("myTextArea"), $scope.caretPos, $scope.caretPos);
+// };
+
+
+
         
 
   $scope.enterPress = function(keyEvent) {
@@ -258,18 +276,14 @@ $scope.setCaretToPos = function() {
       /* enter pressed */
       /* print line to console log */
       console.log( 'line=' + line );
-      // $http({
-      //   method: 'POST',
-      //   url: '/command',
-      //   data: {line: line}
-      // }).then(function successCallback(response) {
-      //   console.log(data);
-      // }, function errorCallback(response) {
 
-      // });
+      /* prevent the cursor from moving down */
+      keyEvent.preventDefault();
+
       /* reset line */
       /* get request */
       console.log(googleUser);
+      console.log( "get:" + line );
       $.get( 
         "/get",
         { line: line,
@@ -277,11 +291,16 @@ $scope.setCaretToPos = function() {
         function(data) {
           /* lag callback result */
           console.log( data );
+          if( data ) {
+            document.getElementById( "TextArea" ).value += "\n" + data;
+          }
         } 
       );
       line = "";
+
+      document.getElementById( "TextArea" ).value += "\nDocuments\nUsers\n";
       
-      
+      // setCaretToPos( "TextArea", 0 );
 
       /* log enter pressed */
       console.log("enter pressed");
