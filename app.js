@@ -118,13 +118,14 @@ app.post('/connect', function(req, res) {
 		conn.on('keyboard-interactive', function(name, instr, lang, prompts, cb) {
 			cb([password]);
 		});
+		conn.on('error', function(err) {
+			console.log(err);
+		}); 
 		conn.on('ready', function() {
 
 			socket.emit('data', '\n*** SSH CONNECTION ESTABLISHED ***\n');
 			conn.shell(function(err, stream) {
-				if (err) {
-					console.log(err);
-				};
+				
 				socket.on('data', function(data) {
 					stream.write(data);
 				})
@@ -141,6 +142,7 @@ app.post('/connect', function(req, res) {
 		});
 		}).on('close', function() {
 			socket.emit('data', '\n*** SSH CONNECTION CLOSED ***\n');
+			socket.emit('disconnect');
 		}).connect({
 			host: host,
 			port: port,
