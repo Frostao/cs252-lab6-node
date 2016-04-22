@@ -109,8 +109,9 @@ app.post('/connect', function(req, res) {
 	var port = req.body.port;
 	var username = req.body.username;
 	var password = req.body.password;
+
 	
-	io.on('connection', function (socket) {
+	var connection = io.on('connection', function (socket) {
 		var conn = new ssh();
 		socket.on('data', function(data) {
 			console.log(data);
@@ -122,7 +123,7 @@ app.post('/connect', function(req, res) {
 			console.log(err);
 		}); 
 		conn.on('ready', function() {
-
+			console.log("connect again");
 			socket.emit('data', '\n*** SSH CONNECTION ESTABLISHED ***\n');
 			conn.shell(function(err, stream) {
 				
@@ -142,7 +143,8 @@ app.post('/connect', function(req, res) {
 		});
 		}).on('close', function() {
 			socket.emit('data', '\n*** SSH CONNECTION CLOSED ***\n');
-			socket.emit('disconnect');
+			socket.emit('discon', 'end');
+			connection.removeAllListeners('connection');
 		}).connect({
 			host: host,
 			port: port,
