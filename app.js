@@ -27,15 +27,34 @@ app.get('/random.text', function (req, res) {
 	res.send('random.text');
 });
 
+function handleData(data) {
+	console.log('STDOUT: ' + data);
+}
+
 app.get('/get', function(req, res) {
 	var user = req.query.user;
 	var cmd = req.query.line;
-	var conn = hashtable.get(user).conn;
-	var stream = hashtable.get(user).stream;
-	if (stream) {
-		res.send("ff");
-	}
-	console.log(conn.shell);
+	var conn = hashtable.get(user);
+	var output = "";
+	
+	conn.shell(function(err, stream) {
+		if (err) throw err;
+		stream.on('close', function() {
+			console.log('Stream :: close');
+				//conn.end();
+			}).on('data', function(data) {
+				console.log('STDOUT: ' + data);
+				output = output + data;
+			}).stderr.on('data', function(data) {
+				console.log('STDERR: ' + data);
+			});
+			stream.write(cmd+'\n');
+		});
+	
+	setTimeout(function() {
+		res.send(output);
+	}, 500);
+	console.log("output is " + output);
 	console.log(user);
 });
 
@@ -49,31 +68,13 @@ app.post('/test-post', function(req, res) {
 	var Client = require('ssh2').Client;
 
 	var conn = new Client();
-	conn.on('ready', function() {
-		console.log('Client :: ready');
-		conn.shell(function(err, stream) {
-			if (err) throw err;
-			stream.on('close', function() {
-				console.log('Stream :: close');
-				//conn.end();
-			}).on('data', function(data) {
-				console.log('STDOUT: ' + data);
-			}).stderr.on('data', function(data) {
-				console.log('STDERR: ' + data);
-			});
-			hashtable.put(user, {
-				conn: conn,
-				stream: stream
-			});
-			stream.write('cd cs252\n');
-			stream.write('ls\n');
-		});
-	}).connect({
+	conn.connect({
 		host: host,
 		port: port,
 		username: username,
 		password: password
 	});
+	hashtable.put(user, conn);
 
 });
 
@@ -84,8 +85,72 @@ app.use(express.static(__dirname + '/public'));
 var appEnv = cfenv.getAppEnv();
 
 // start server on the specified port and binding host
-app.listen(appEnv.port, '0.0.0.0', function() {
+// app.listen(appEnv.port, '0.0.0.0', function() {
 
-	// print a message when the server starts listening
-	console.log("server starting on " + appEnv.url);
+// 	// print a message when the server starts listening
+// 	console.log("server starting on " + appEnv.url);
+// });
+
+
+
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+var term = require('term.js');
+var ssh = require('ssh2');
+
+server.listen(appEnv.port);
+
+app.use(express.static(__dirname + '/public'));
+app.use(term.middleware());
+
+app.post('/connect', function(req, res) {
+	var host = req.body.host;
+	var port = req.body.port;
+	var username = req.body.username;
+	var password = req.body.password;
+	
+	io.on('connection', function (socket) {
+		var conn = new ssh();
+		socket.on('data', function(data) {
+			console.log(data);
+		});
+		conn.on('keyboard-interactive', function(name, instr, lang, prompts, cb) {
+			cb([password]);
+		});
+		conn.on('ready', function() {
+
+			socket.emit('data', '\n*** SSH CONNECTION ESTABLISHED ***\n');
+			conn.shell(function(err, stream) {
+				if (err) {
+					console.log(err);
+				};
+				socket.on('data', function(data) {
+					stream.write(data);
+				})
+				stream.on('close', function() {
+					console.log('Stream :: close');
+					conn.end();
+				}).on('data', function(data) {
+				//console.log('STDOUT: ' + data);
+				socket.emit('data', data.toString('binary'));
+			}).stderr.on('data', function(data) {
+				console.log('STDERR: ' + data);
+			});
+
+		});
+		}).on('close', function() {
+			socket.emit('data', '\n*** SSH CONNECTION CLOSED ***\n');
+		}).connect({
+			host: host,
+			port: port,
+			username: username,
+			password: password,
+			tryKeyboard: true
+		});
+	});
+	res.send("connectted");
+	
+
 });
+

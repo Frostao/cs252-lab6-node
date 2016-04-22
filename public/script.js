@@ -21,7 +21,7 @@ var auth2 = {};
 
         // $(document).ready(function(){
         // $("button").click(function(){
-          $.post("/test-post",
+          $.post("/connect",
           {
             host: host,
             port: port,
@@ -30,7 +30,10 @@ var auth2 = {};
             user: googleUser.El
           },
           function(data,status){
-            alert("Data: " + data + "\nStatus: " + status);
+            //alert("Data: " + data + "\nStatus: " + status);
+            var event = new Event('signedIn');
+            var iframeWindow = document.getElementById("iframe").contentWindow; 
+            iframeWindow.dispatchEvent(event);
           }).fail( function() {
             console.log( "jQuery post failed" );
             document.getElementById("TextArea").value = "noServerConnection";
