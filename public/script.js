@@ -55,6 +55,10 @@ var auth2 = {};
 			refreshValues();
 			var auth2 = gapi.auth2.getAuthInstance();
 			auth2.signOut().then(function () {
+        document.getElementById( 'host' ).value = "";
+        document.getElementById( 'port' ).value = "";
+        document.getElementById( 'username' ).value = "";
+        document.getElementById( 'password' ).value = "";
 	    		// $( '.g-signin2' ).fadeIn(500);
 	    		// $( '.logoutWrapper' ).fadeOut(500);
 	    		console.log('User signed out.');
@@ -246,6 +250,13 @@ jQuery(function($) {
       /* enter pressed */
       /* print line to console log */
       console.log( 'line=' + line );
+
+      if( line.localeCompare("clear") == 0 ) {
+        document.getElementById( "TextArea" ).value = prompt;
+        console.log("clear");
+        line = "";
+        return;
+      }
 
       /* prevent the cursor from moving down */
       keyEvent.preventDefault();
