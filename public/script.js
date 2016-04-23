@@ -243,7 +243,7 @@ jQuery(function($) {
 
 
   /* app controller */
-  app.controller('AppCtrl', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
+  app.controller('AppCtrl', ['$scope', '$https', '$timeout', function($scope, $https, $timeout) {
 
   $scope.enterPress = function(keyEvent) {
     if (keyEvent.which === 13) {
