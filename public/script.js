@@ -1,11 +1,9 @@
 var auth2 = {};
 
-
-
-
   var prompt;
 
 	function onSignIn(googleUser) {
+    // document.location.href = "terminal.html"
 		refreshValues();
 		var profile = googleUser.getBasicProfile();
 	  		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -21,6 +19,7 @@ var auth2 = {};
 
         // $(document).ready(function(){
         // $("button").click(function(){
+          console.log("user = " + googleUser.El );
           $.post("/connect",
           {
             host: host,
@@ -46,7 +45,7 @@ var auth2 = {};
           } else {
             prompt = "prompt-> ";
           }
-          if( !document.getElementById("TextArea").value || document.getElementById("TextArea").value.indexOf(prompt) == -1 ) {
+          if( document.getElementById( "TextArea" ) && ( !document.getElementById("TextArea").value || document.getElementById("TextArea").value.indexOf(prompt) == -1 ) ) {
             document.getElementById("TextArea").value += prompt;
           }
 			document.getElementById( 'user' ).innerHTML =  'Hello, ' + profile.getName();
@@ -93,7 +92,7 @@ var googleUser; // The current user.
     // client_id: 'CLIENT_ID.apps.googleusercontent.com',
     // scope: 'profile'
 // });
-auth2 = gapi.auth2.getAuthInstance();
+  auth2 = gapi.auth2.getAuthInstance();
 
   // Listen for sign-in state changes.
   auth2.isSignedIn.listen(signinChanged);
@@ -191,6 +190,13 @@ auth2 = gapi.auth2.getAuthInstance();
     .warnPalette('red')
     .backgroundPalette('light-blue');
   });
+
+$(document).keypress(function(e) {
+  /* enter pressed */
+  if( e.which == 13 ) {
+    /* treat this as login */
+  }
+});
 
     /* md-header */
 
