@@ -4,29 +4,75 @@ var auth2 = {};
 
   function signInPressed() {
     console.log("sgin in pressed");
+    var host = document.getElementById( 'host' ).value;
+    var port = document.getElementById( 'port' ).value;
+    var username = document.getElementById( 'username' ).value;
+    var password = document.getElementById( 'password' ).value;
+
+    if( host && port && username && password ) {
+      // refreshValues(true);
+    } else {
+      $( '#my-signin2' ).fadeOut(0);
+      document.getElementById( "enter" ).style.display='inline';
+      // $("#body").effect("shake");
+      // refreshValues(false);
+    }
+  }
+
+  function credentials() {
+    var host = document.getElementById( 'host' ).value;
+    var port = document.getElementById( 'port' ).value;
+    var username = document.getElementById( 'username' ).value;
+    var password = document.getElementById( 'password' ).value;
+
+    if( host && port && username && password ) {
+      refreshValues(true);
+    var profile = googleUser.getBasicProfile();
+
+      $.post("/connect",
+          {
+            host: host,
+            port: port,
+            username: username,
+            password: password,
+            googleName: profile.getName(),
+            googleEmail: profile.getEmail()
+            // user: googleUser.El
+          },
+          function(data,status){
+            //alert("Data: " + data + "\nStatus: " + status);
+            var event = new Event('signedIn');
+            var iframeWindow = document.getElementById("iframe").contentWindow; 
+            iframeWindow.dispatchEvent(event);
+          }).fail( function() {
+            console.log( "jQuery post failed" );
+            document.getElementById("TextArea").value = "noServerConnection";
+          });
+          console.log("post finished");
+    } else {
+      $( '#my-signin2' ).fadeOut(0);
+      document.getElementById( "enter" ).style.display='inline';
+      // $("#body").effect("shake");
+    }
   }
 
 	function onSignIn(googleUser) {
-    console.log("switching...");
-    if( document.location.href !== "terminal.html" ) {
-      // document.location.href = "terminal.html"
-    }
-		refreshValues();
-		var profile = googleUser.getBasicProfile();
-	  		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    var host = document.getElementById( 'host' ).value;
+    var port = document.getElementById( 'port' ).value;
+    var username = document.getElementById( 'username' ).value;
+    var password = document.getElementById( 'password' ).value;
+    var profile;
+    if( host && port && username && password ) {
+      refreshValues(true);
+      profile = googleUser.getBasicProfile();		
+	  	console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
 	  		console.log('Name: ' + profile.getName());
 	  		console.log('Image URL: ' + profile.getImageUrl());
 	  		console.log('Email: ' + profile.getEmail());
-	  		var host = document.getElementById( 'host' ).value;
-	  		var port = document.getElementById( 'port' ).value;
-        var username = document.getElementById( 'username' ).value;
-        var password = document.getElementById( 'password' ).value;
         console.log( 'host: ' + host );
         console.log( 'port: ' + port );
 
-        // $(document).ready(function(){
-        // $("button").click(function(){
-          // console.log("user = " + googleUser.El );
+        // console.log("user = " + googleUser.El );
           $.post("/connect",
           {
             host: host,
@@ -48,19 +94,18 @@ var auth2 = {};
           });
           console.log("post finished");
 
-          
-          if( host ) {
-            prompt = host + "-> ";
-          } else {
-            prompt = "prompt-> ";
-          }
-          if( document.getElementById( "TextArea" ) && ( !document.getElementById("TextArea").value || document.getElementById("TextArea").value.indexOf(prompt) == -1 ) ) {
-            document.getElementById("TextArea").value += prompt;
-          }
+    } else {
+      $( '#my-signin2' ).fadeOut(0);
+      document.getElementById( "enter" ).style.display='inline';
+      // $("#body").effect("shake");
+      refreshValues(false);
+      profile = googleUser.getBasicProfile();
+    }
+
 			document.getElementById( 'user' ).innerHTML =  'Hello, ' + profile.getName();
 		}
 		function signOut() {
-			refreshValues();
+			refreshValues( true );
 			var auth2 = gapi.auth2.getAuthInstance();
 			auth2.signOut().then(function () {
         document.getElementById( 'host' ).value = "";
@@ -116,7 +161,7 @@ var googleUser; // The current user.
   	auth2.signIn();
   } 
   // Start with the current live values.
-  refreshValues();
+  refreshValues(true);
 };
 
 /**
@@ -126,7 +171,7 @@ var googleUser; // The current user.
  */
  var signinChanged = function (val) {
  	console.log('Signin state changed to ', val);
- 	refreshValues();
+ 	refreshValues(!val);
   // document.getElementById('signed-in-cell').innerText = val;
 };
 
@@ -164,30 +209,50 @@ var googleUser; // The current user.
  * Retrieves the current user and signed in states from the GoogleAuth
  * object.
  */
- var refreshValues = function() {
- 	if (auth2){
+ var refreshValues = function( shouldChange ) {
+ 	if (auth2) {
  		console.log('Refreshing values...');
 
  		googleUser = auth2.currentUser.get();
 
-    // document.getElementById('curr-user-cell').innerText =
-      // JSON.stringify(googleUser, undefined, 2);
-    // document.getElementById('signed-in-cell').innerText =
-      // auth2.isSignedIn.get();
-
+    if( shouldChange ) {
       if (auth2.isSignedIn.get() == true) {
       	$('.loginWrapper').fadeOut(500);
       	$('.logoutWrapper').fadeIn(500);
         $('#signOutButton').fadeIn(0);
       } else {
-      	// document.getElementsByClassName( 'logoutWrapper' )[0].style.visibility="visible";
       	$( '.logoutWrapper' ).fadeOut(0);
         $( '#signOutButton').fadeOut(0);
       	$( '.loginWrapper' ).fadeIn(500);
+        document.getElementById( "enter" ).style.display='none';
+        $('#my-signin2').fadeIn(0);
       }
+    } else {
+      if (auth2.isSignedIn.get() == true) {
+        $('#signOutButton').fadeIn(0);
+      } else {
+        $( '#signOutButton').fadeOut(0);
+      }
+    }
 
+    updateGoogleUser();
+    }
+  }
 
-      updateGoogleUser();
+  var refreshPage = function() {
+    // refreshValues();
+    if (auth2) {
+      if (auth2.isSignedIn.get() == true) {
+        $('.loginWrapper').fadeOut(500);
+        $('.logoutWrapper').fadeIn(500);
+        $('#signOutButton').fadeIn(0);
+      } else {
+        $( '.logoutWrapper' ).fadeOut(0);
+        $( '#signOutButton').fadeOut(0);
+        $( '.loginWrapper' ).fadeIn(500);
+        document.getElementById( "enter" ).style.display='none';
+        $('#my-signin2').fadeIn(0);
+      }
     }
   }
 
