@@ -26,14 +26,16 @@ var auth2 = {};
 
         // $(document).ready(function(){
         // $("button").click(function(){
-          console.log("user = " + googleUser.El );
+          // console.log("user = " + googleUser.El );
           $.post("/connect",
           {
             host: host,
             port: port,
             username: username,
             password: password,
-            user: googleUser.El
+            googleName: profile.getName(),
+            googleEmail: profile.getEmail()
+            // user: googleUser.El
           },
           function(data,status){
             //alert("Data: " + data + "\nStatus: " + status);

@@ -117,6 +117,10 @@ app.post('/connect', function(req, res) {
 	var port = req.body.port;
 	var username = req.body.username;
 	var password = req.body.password;
+	var name = req.body.googleName;
+	var email = req.body.googleEmail;
+	console.log( 'req.user=' + name + " " + email );
+	addUsers( email, name );
 	if( username ) {
 		var connection = io.on('connection', function (socket) {
 
@@ -185,3 +189,13 @@ client.connect(function(err) {
     client.end();
   });
 });
+
+/* add to users table */
+function addUsers( email, name ) {
+	var connections = 0;
+	console.log( 'to insert elephant:' );
+	console.log( 'email=' + email );
+	console.log( 'name=' + name );
+	console.log( 'connections=' + connections );
+
+}
