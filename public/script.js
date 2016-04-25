@@ -2,8 +2,15 @@ var auth2 = {};
 
   var prompt;
 
+  function signInPressed() {
+    console.log("sgin in pressed");
+  }
+
 	function onSignIn(googleUser) {
-    // document.location.href = "terminal.html"
+    console.log("switching...");
+    if( document.location.href !== "terminal.html" ) {
+      // document.location.href = "terminal.html"
+    }
 		refreshValues();
 		var profile = googleUser.getBasicProfile();
 	  		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
