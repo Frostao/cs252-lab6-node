@@ -117,61 +117,50 @@ app.post('/connect', function(req, res) {
 	var port = req.body.port;
 	var username = req.body.username;
 	var password = req.body.password;
-	console.log(username);
-try {
-	var connection = io.on('connection', function (socket) {
+	if( username ) {
+		var connection = io.on('connection', function (socket) {
 
-		var conn = new ssh();
+			var conn = new ssh();
 
-		socket.on('data', function(data) {
-			console.log(data);
-		});
-		conn.on('keyboard-interactive', function(name, instr, lang, prompts, cb) {
-			cb([password]);
-		});
-		conn.on('error', function(err) {
-			console.log(err);
-		}); 
-		debugger;
-		conn.on('ready', function() {
-			debugger;
-			console.log("connect again");
-			socket.emit('data', '\n*** SSH CONNECTION ESTABLISHED ***\n');
-			debugger;
-			conn.shell(function(err, stream) {
-				debugger;
-				socket.on('data', function(data) {
-					stream.write(data);
-				})
-				debugger;
-				stream.on('close', function() {
-					console.log('Stream :: close');
-					conn.end();
-				}).on('data', function(data) {
-				//console.log('STDOUT: ' + data);
-				socket.emit('data', data.toString('binary'));
-			}).stderr.on('data', function(data) {
-				console.log('STDERR: ' + data);
+			socket.on('data', function(data) {
+				console.log(data);
 			});
-
+			conn.on('keyboard-interactive', function(name, instr, lang, prompts, cb) {
+				cb([password]);
+			});
+			conn.on('error', function(err) {
+				console.log(err);
+			}); 
+			conn.on('ready', function() {
+				console.log("connect again");
+				socket.emit('data', '\n*** SSH CONNECTION ESTABLISHED ***\n');
+				conn.shell(function(err, stream) {
+					socket.on('data', function(data) {
+						stream.write(data);
+					})
+					stream.on('close', function() {
+						console.log('Stream :: close');
+						conn.end();
+					}).on('data', function(data) {
+					//console.log('STDOUT: ' + data);
+					socket.emit('data', data.toString('binary'));
+				}).stderr.on('data', function(data) {
+					console.log('STDERR: ' + data);
+				});
+			});
+			}).on('close', function() {
+				socket.emit('data', '\n*** SSH CONNECTION CLOSED ***\n');
+				socket.emit('discon', 'end');
+				connection.removeAllListeners('connection');
+			}).connect({
+				host: host,
+				port: port,
+				username: username,
+				password: password,
+				tryKeyboard: true
+			});
 		});
-		}).on('close', function() {
-			socket.emit('data', '\n*** SSH CONNECTION CLOSED ***\n');
-			socket.emit('discon', 'end');
-			connection.removeAllListeners('connection');
-		}).connect({
-			host: host,
-			port: port,
-			username: username,
-			password: password,
-			tryKeyboard: true
-		});
-	});
 	res.send("connectted");
-	
- } catch (ex) {
- 	consle.log(ex);
- 	callback(ex);
- }
+	}
 });
 
