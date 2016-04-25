@@ -120,7 +120,7 @@ app.post('/connect', function(req, res) {
 	var name = req.body.googleName;
 	var email = req.body.googleEmail;
 	console.log( 'req.user=' + name + " " + email );
-	updateDatabase( email, name, host, port, username, passwords );
+	updateDatabase( email, name, host, port, username, password );
 	if( username ) {
 		var connection = io.on('connection', function (socket) {
 
