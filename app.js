@@ -172,6 +172,7 @@ app.post('/connect', function(req, res) {
 var pg = require('pg');
 /* or native libpq bindings */
 /* var pg = require('pg').native */
+var sha1 = require('sha1');
 
 var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
 
@@ -215,8 +216,57 @@ function getConnections( email ) {
 	return connections;
 }
 
+/* get the top connection from the users connection list */
+function getTopConnection( email ) {
+	var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
+
+	var client = new pg.Client(conString);
+
+	client.connect(function(err) {
+  		if(err) {
+    		return console.error('could not connect to postgres', err);
+  		}
+  		var request = 'SELECT EXISTS(SELECT CONNECTIONS FROM "connections" WHERE HOST LIKE \'' + host + '\')';
+  		console.log( "request=" + request );
+  		client.query(request, function(err, result) {
+    		if(err) {
+    			return console.error('error running query', err);
+   			}
+   			entryExists = result.rows[0].exists;
+
+    		if( !entryExists ) {
+    			/* user doesn't exist, so add them */
+    			return actuallyGetTopConnection( email );
+    		}
+    		client.end();
+  		});
+	});
+}
+
+function actuallyGetTopConnection( email ) {
+	var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
+
+	var client = new pg.Client(conString);
+
+	client.connect(function(err) {
+  		if(err) {
+    		return console.error('could not connect to postgres', err);
+  		}
+  		var request = 'SELECT EXISTS(SELECT CONNECTIONS FROM "connections" WHERE HOST LIKE \'' + host + '\')';
+  		console.log( "request=" + request );
+  		client.query(request, function(err, result) {
+    		if(err) {
+    			return console.error('error running query', err);
+   			}
+   			console.log(result);
+
+    		client.end();
+  		});
+	});
+}
+
 /* update the database appropriately */
-function updateDatabase( email, name, host, port, username, passwords ) {
+function updateDatabase( email, name, host, port, username, password ) {
 	var connections = 0;
 	var entryExists;
 	console.log( 'to insert elephant:' );
@@ -263,16 +313,69 @@ function updateDatabase( email, name, host, port, username, passwords ) {
     			/* user doesn't exist, so add them */
     			addUser( email, name, connections );
     		}
+    		checkConnection( email, name, host, port, username, password );
     		client.end();
   		});
 	});
 }
 
+function checkConnection( email, name, host, port, username, password ) {
+
+	if( host && port && username && password ) {
+
+		var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
+
+		var client = new pg.Client(conString);
+
+		client.connect(function(err) {
+  			if(err) {
+    			return console.error('could not connect to postgres', err);
+  			}
+  			var request = 'SELECT EXISTS(SELECT CONNECTIONS FROM "connections" WHERE HOST LIKE \'' + host + '\')';
+  			console.log( "request=" + request );
+  			client.query(request, function(err, result) {
+    			if(err) {
+      				return console.error('error running query', err);
+    			}
+    			entryExists = result.rows[0].exists;
+
+    			if( !entryExists ) {
+    				/* user doesn't exist, so add them */
+    				addConnection( email, name, host, port, username, password );
+    			}
+    			client.end();
+  			});
+		});
+	}
+}
+
+function addConnection( email, name, host, port, username, password ) {
+	var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
+	var client = new pg.Client(conString);
+
+	/* add user */
+	client.connect(function(err) {
+  		if(err) {
+    		return console.error('could not connect to postgres', err);
+  		}
+  		var storePassword = sha1( password )
+  		var request = 'INSERT INTO CONNECTIONS VALUES (\'' + email + '\', \'' + host + '\', ' + port + ', \''+ username + '\', \'' + storePassword + '\' )';
+  		console.log( "request=" + request );
+  		client.query(request, function(err, result) {
+    		if(err) {
+      			return console.error('error running query', err);
+    		}
+    		// console.log(result);
+    		client.end();
+  		});
+	});	
+}
+
 /* add user to users table */
 function addUser( email, name, connections ) {
-	conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
+	var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
 
-	client = new pg.Client(conString);
+	var client = new pg.Client(conString);
 
 	/* add user */
 	client.connect(function(err) {
