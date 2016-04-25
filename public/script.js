@@ -67,6 +67,7 @@ var auth2 = {};
         document.getElementById( 'password' ).value = "";
 	    		// $( '.g-signin2' ).fadeIn(500);
 	    		// $( '.logoutWrapper' ).fadeOut(500);
+          document.getElementById( 'user' ).innerHTML = "Welcome!"
 	    		console.log('User signed out.');
 	    	});
 		}

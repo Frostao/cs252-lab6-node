@@ -35,37 +35,32 @@
 	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/0.8.3/angular-material.min.css">
 </head>
 <body onload="onLoad()">
-  <div class="logoutWrapper">
 
-    <md-toolbar md-scroll-shrink>
+  <md-toolbar md-scroll-shrink>
     <div class="md-toolbar-tools" md-theme="default">  
       <h3>Online ssh/sftp Server</h3>  
       <span flex></span>
       <h1 id = "message"></h1>
-      <h2 id = "user"></h2>
+      <h2 id = "user">Welcome!</h2>
       <pre>  </pre>
       <md-button class="md-raised md-primary" onclick="signOut()"><span>Sign Out</span> </md-button>
     </div>
   </md-toolbar>
 
-  <td>
-    <!-- <h1 id = "message"></h1> -->
-    <!-- <h2 id = "user"></h2> -->
 
+  <div class="logoutWrapper">
+
+    
+
+  <td>
     <div id="container">
-    <iframe id="iframe" name="iframe_a" src="client.html" frameborder="0" style="border:none; width: 100%; height: 100%; position: absolute" id="fileframe"></iframe>
+    <iframe class='AutoExpand' id="iframe" name="iframe_a" src="client.html" frameborder="10px" style="border:none; width: 100%; height: 100%; position: absolute" id="fileframe" ng-kyeup="autoExpand($event)" ng=model="loremIpsum"></iframe>
+    <!-- <textarea class='AutoExpand' rows='3' data-min-rows='1' placeholder='Auto-Expanding Textarea' id="TextArea" ng-model="loremIpsum" ng-keyup="autoExpand($event)" ng-key press="enterPress($event)"></textarea> -->
     </div>
   </td>
 </div>
 
 <div class="loginWrapper">
-  <md-toolbar md-scroll-shrink>
-  <div class="md-toolbar-tools">  
-    <h1>Online ssh/sftp Server</h1>
-    <span flex></span>
-    <span>Welcome!</span>
-  </div>
-</md-toolbar>
 
 <form class="form">	
   <input type="text" placeholder="host" id="host"><br>
