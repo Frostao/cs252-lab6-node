@@ -88,6 +88,7 @@ var googleUser; // The current user.
  var appStart = function() {
  	console.log( 'appStart' );
  	$( '.logoutWrapper' ).fadeOut(0);
+  $( '#signOutButton' ).fadeOut(0);
  	gapi.load('auth2', initSigninV2);
  };
 
@@ -175,9 +176,11 @@ var googleUser; // The current user.
       if (auth2.isSignedIn.get() == true) {
       	$('.loginWrapper').fadeOut(500);
       	$('.logoutWrapper').fadeIn(500);
+        $('#signOutButton').fadeIn(0);
       } else {
       	// document.getElementsByClassName( 'logoutWrapper' )[0].style.visibility="visible";
       	$( '.logoutWrapper' ).fadeOut(0);
+        $( '#signOutButton').fadeOut(0);
       	$( '.loginWrapper' ).fadeIn(500);
       }
 
