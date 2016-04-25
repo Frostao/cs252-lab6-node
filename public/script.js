@@ -4,52 +4,46 @@ var auth2 = {};
 
   function signInPressed() {
     console.log("sgin in pressed");
-    var host = document.getElementById( 'host' ).value;
-    var port = document.getElementById( 'port' ).value;
-    var username = document.getElementById( 'username' ).value;
-    var password = document.getElementById( 'password' ).value;
-
-    if( host && port && username && password ) {
-      // refreshValues(true);
-    } else {
-      $( '#my-signin2' ).fadeOut(0);
-      document.getElementById( "enter" ).style.display='inline';
-      // $("#body").effect("shake");
-      // refreshValues(false);
-    }
   }
 
+  /* called when user clicks "enter" (that's its id in index.html) button */
   function credentials() {
+    /* get the values from the text boxes */
     var host = document.getElementById( 'host' ).value;
     var port = document.getElementById( 'port' ).value;
     var username = document.getElementById( 'username' ).value;
     var password = document.getElementById( 'password' ).value;
 
+    /* if all text boxes have values in them, then continue */
     if( host && port && username && password ) {
+      /* refresh values and refresh page (pass true) */
       refreshValues(true);
-    var profile = googleUser.getBasicProfile();
+      /* update Google profile */
+      var profile = googleUser.getBasicProfile();
 
+      /* make post request with new credentials */
       $.post("/connect",
-          {
-            host: host,
-            port: port,
-            username: username,
-            password: password,
-            googleName: profile.getName(),
-            googleEmail: profile.getEmail()
+      {
+        host: host,
+        port: port,
+        username: username,
+        password: password,
+        googleName: profile.getName(),
+        googleEmail: profile.getEmail()
             // user: googleUser.El
-          },
-          function(data,status){
-            //alert("Data: " + data + "\nStatus: " + status);
-            var event = new Event('signedIn');
-            var iframeWindow = document.getElementById("iframe").contentWindow; 
-            iframeWindow.dispatchEvent(event);
-          }).fail( function() {
-            console.log( "jQuery post failed" );
-            document.getElementById("TextArea").value = "noServerConnection";
-          });
-          console.log("post finished");
+        },
+        function(data,status){
+          //alert("Data: " + data + "\nStatus: " + status);
+          var event = new Event('signedIn');
+          var iframeWindow = document.getElementById("iframe").contentWindow; 
+          iframeWindow.dispatchEvent(event);
+        }).fail( function() {
+          console.log( "jQuery post failed" );
+          document.getElementById("TextArea").value = "noServerConnection";
+        });
+        console.log("post finished");
     } else {
+      /* enters here if the user has not entered one of the fields */
       $( '#my-signin2' ).fadeOut(0);
       document.getElementById( "enter" ).style.display='inline';
       // $("#body").effect("shake");
@@ -57,53 +51,57 @@ var auth2 = {};
   }
 
 	function onSignIn(googleUser) {
+    /* get fileds from text areas */
     var host = document.getElementById( 'host' ).value;
     var port = document.getElementById( 'port' ).value;
     var username = document.getElementById( 'username' ).value;
     var password = document.getElementById( 'password' ).value;
     var profile;
+    /* if user has entered all fields, then proceed into here */
     if( host && port && username && password ) {
       refreshValues(true);
       profile = googleUser.getBasicProfile();		
 	  	console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-	  		console.log('Name: ' + profile.getName());
-	  		console.log('Image URL: ' + profile.getImageUrl());
-	  		console.log('Email: ' + profile.getEmail());
-        console.log( 'host: ' + host );
-        console.log( 'port: ' + port );
+	  	console.log('Name: ' + profile.getName());
+	  	console.log('Image URL: ' + profile.getImageUrl());
+	  	console.log('Email: ' + profile.getEmail());
+      console.log( 'host: ' + host );
+      console.log( 'port: ' + port );
 
-        // console.log("user = " + googleUser.El );
-          $.post("/connect",
-          {
-            host: host,
-            port: port,
-            username: username,
-            password: password,
-            googleName: profile.getName(),
-            googleEmail: profile.getEmail()
-            // user: googleUser.El
-          },
-          function(data,status){
-            //alert("Data: " + data + "\nStatus: " + status);
-            var event = new Event('signedIn');
-            var iframeWindow = document.getElementById("iframe").contentWindow; 
-            iframeWindow.dispatchEvent(event);
-          }).fail( function() {
-            console.log( "jQuery post failed" );
-            document.getElementById("TextArea").value = "noServerConnection";
-          });
-          console.log("post finished");
-
+      // console.log("user = " + googleUser.El );
+      $.post("/connect",
+      {
+        host: host,
+        port: port,
+        username: username,
+        password: password,
+        googleName: profile.getName(),
+        googleEmail: profile.getEmail()
+        // user: googleUser.El
+      },
+      function(data,status){
+        //alert("Data: " + data + "\nStatus: " + status);
+        var event = new Event('signedIn');
+        var iframeWindow = document.getElementById("iframe").contentWindow; 
+        iframeWindow.dispatchEvent(event);
+      }).fail( function() {
+        console.log( "jQuery post failed" );
+        document.getElementById("TextArea").value = "noServerConnection";
+      });
+      console.log("post finished");
     } else {
+      /* if user has not entered all fields, proceed into here */
       $( '#my-signin2' ).fadeOut(0);
       document.getElementById( "enter" ).style.display='inline';
       // $("#body").effect("shake");
       refreshValues(false);
       profile = googleUser.getBasicProfile();
+      // $("#body").effect("shake");
     }
-
-			document.getElementById( 'user' ).innerHTML =  'Hello, ' + profile.getName();
-		}
+    /* update hello message */
+		document.getElementById( 'user' ).innerHTML =  'Hello, ' + profile.getName();
+	}
+  /* called when the signOut button is pressed */
 		function signOut() {
 			refreshValues( true );
 			var auth2 = gapi.auth2.getAuthInstance();
@@ -415,14 +413,7 @@ jQuery(function($) {
   // });
   /* md-toolbar */
 
-
-
   function expand() {
     $scope.autoExpand('TextArea');
   }
 }]);
-
-
-
-
-  /* TODO header */
