@@ -197,5 +197,21 @@ function addUsers( email, name ) {
 	console.log( 'email=' + email );
 	console.log( 'name=' + name );
 	console.log( 'connections=' + connections );
+	var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
 
+	var client = new pg.Client(conString);
+	client.connect(function(err) {
+  		if(err) {
+    		return console.error('could not connect to postgres', err);
+  		}
+  		var request = 'INSERT INTO USERS VALUES (\'' + email + '\', \'' + name + '\', ' + connections + ');';
+  		console.log( "request=" + request );
+  		client.query(request, function(err, result) {
+    		if(err) {
+      			return console.error('error running query', err);
+    		}
+    		console.log(result);
+    		client.end();
+  		});
+	});
 }
