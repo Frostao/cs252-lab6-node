@@ -22,7 +22,6 @@ app.use(bodyParser.json());
 var HashTable = require('hashtable');
 var hashtable = new HashTable();
 
-
 app.get('/random.text', function (req, res) {
 	res.send('random.text');
 });
@@ -32,13 +31,20 @@ function handleData(data) {
 }
 
 app.get('/get', function(req, res) {
+
 	var user = req.query.user;
+
 	var cmd = req.query.line;
+
 	var conn = hashtable.get(user);
+
 	var output = "";
+
 	
 	conn.shell(function(err, stream) {
+
 		if (err) throw err;
+
 		stream.on('close', function() {
 			console.log('Stream :: close');
 				//conn.end();
@@ -50,11 +56,14 @@ app.get('/get', function(req, res) {
 			});
 			stream.write(cmd+'\n');
 		});
-	
+
 	setTimeout(function() {
+
 		res.send(output);
+
 	}, 500);
 	console.log("output is " + output);
+
 	console.log(user);
 });
 
@@ -92,27 +101,28 @@ var appEnv = cfenv.getAppEnv();
 // });
 
 
-
 var server = require('http').Server(app);
+
 var io = require('socket.io')(server);
 
 var term = require('term.js');
+
 var ssh = require('ssh2');
 
 server.listen(appEnv.port);
-
 app.use(express.static(__dirname + '/public'));
 app.use(term.middleware());
-
 app.post('/connect', function(req, res) {
 	var host = req.body.host;
 	var port = req.body.port;
 	var username = req.body.username;
 	var password = req.body.password;
-
-	
+	console.log(username);
+try {
 	var connection = io.on('connection', function (socket) {
+
 		var conn = new ssh();
+
 		socket.on('data', function(data) {
 			console.log(data);
 		});
@@ -122,14 +132,18 @@ app.post('/connect', function(req, res) {
 		conn.on('error', function(err) {
 			console.log(err);
 		}); 
+		debugger;
 		conn.on('ready', function() {
+			debugger;
 			console.log("connect again");
 			socket.emit('data', '\n*** SSH CONNECTION ESTABLISHED ***\n');
+			debugger;
 			conn.shell(function(err, stream) {
-				
+				debugger;
 				socket.on('data', function(data) {
 					stream.write(data);
 				})
+				debugger;
 				stream.on('close', function() {
 					console.log('Stream :: close');
 					conn.end();
@@ -155,6 +169,9 @@ app.post('/connect', function(req, res) {
 	});
 	res.send("connectted");
 	
-
+ } catch (ex) {
+ 	consle.log(ex);
+ 	callback(ex);
+ }
 });
 
