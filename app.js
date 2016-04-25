@@ -120,7 +120,7 @@ app.post('/connect', function(req, res) {
 	var name = req.body.googleName;
 	var email = req.body.googleEmail;
 	console.log( 'req.user=' + name + " " + email );
-	addUsers( email, name );
+	updateDatabase( email, name, host, port, username, passwords );
 	if( username ) {
 		var connection = io.on('connection', function (socket) {
 
@@ -170,8 +170,8 @@ app.post('/connect', function(req, res) {
 
 /* ElephantSQL */
 var pg = require('pg');
-//or native libpq bindings
-//var pg = require('pg').native
+/* or native libpq bindings */
+/* var pg = require('pg').native */
 
 var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
 
@@ -215,41 +215,37 @@ function getConnections( email ) {
 	return connections;
 }
 
-/* add to users table */
-function addUsers( email, name ) {
+/* update the database appropriately */
+function updateDatabase( email, name, host, port, username, passwords ) {
 	var connections = 0;
+	var entryExists;
 	console.log( 'to insert elephant:' );
 	console.log( 'email=' + email );
 	console.log( 'name=' + name );
-	// console.log( 'connections=' + connections );
 
 	var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
 
 	var client = new pg.Client(conString);
-	var connections;
 	// /* get current number of connections */
-	client.connect(function(err) {
-  		if(err) {
-    		return console.error('could not connect to postgres', err);
-  		}
-  		/* SELECT CONNECTIONS FROM "users" WHERE EMAIL LIKE 'calebandrewb@gmail.com' */
-  		var request = 'SELECT CONNECTIONS FROM "users" WHERE EMAIL LIKE \'' + email + '\'';
-  		console.log( "request=" + request );
-  		client.query(request, function(err, result) {
-    		if(err) {
-      			return console.error('error running query', err);
-    		}
-    		// console.log(result.rows[0].connections);
-    		connections = result.rows[0].connections;
-    		client.end();
-  		});
-	});
+	// client.connect(function(err) {
+ //  		if(err) {
+ //    		return console.error('could not connect to postgres', err);
+ //  		}
+ //  		/* SELECT CONNECTIONS FROM "users" WHERE EMAIL LIKE 'calebandrewb@gmail.com' */
+ //  		var request = 'SELECT CONNECTIONS FROM "users" WHERE EMAIL LIKE \'' + email + '\'';
+ //  		console.log( "request=" + request );
+ //  		client.query(request, function(err, result) {
+ //    		if(err) {
+ //      			return console.error('error running query', err);
+ //    		}
+ //    		connections = result.rows[0].connections;
+ //    		client.end();
+ //  		});
+	// });
 
 	conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
 
 	client = new pg.Client(conString);
-	console.log( "connections=" + connections );
-
 
 	client.connect(function(err) {
   		if(err) {
@@ -261,11 +257,19 @@ function addUsers( email, name ) {
     		if(err) {
       			return console.error('error running query', err);
     		}
-    		console.log(result.rows[0].exists);
+    		entryExists = result.rows[0].exists;
+
+    		if( !entryExists ) {
+    			/* user doesn't exist, so add them */
+    			addUser( email, name, connections );
+    		}
     		client.end();
   		});
 	});
+}
 
+/* add user to users table */
+function addUser( email, name, connections ) {
 	conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
 
 	client = new pg.Client(conString);
@@ -281,10 +285,8 @@ function addUsers( email, name ) {
     		if(err) {
       			return console.error('error running query', err);
     		}
-    		// console.log(result);
+    		console.log(result);
     		client.end();
   		});
 	});
-
-
 }
