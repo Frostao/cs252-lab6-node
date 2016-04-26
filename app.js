@@ -69,7 +69,6 @@ app.get('/get', function(req, res) {
 
 app.get('/getConnections', function(req, res) {
 	var id = req.query.email;
-	console.log('/getConnections');
 
 	var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
 
@@ -79,8 +78,8 @@ app.get('/getConnections', function(req, res) {
   		if(err) {
     		return console.error('could not connect to postgres', err);
   		}
-  		var request = 'SELECT CONNECTIONS FROM "connections" WHERE ID LIKE \'' + id + '\'';
-  		console.log( "request=" + request );
+  		var request = 'SELECT HOST, PORT, USERNAME FROM "connections" WHERE ID LIKE \'' + id + '\'';
+  		// console.log( "request=" + request );
   		client.query(request, function(err, result) {
     		if(err) {
     			return console.error('error running query', err);

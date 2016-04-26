@@ -19,5 +19,8 @@
   "repository": {},
   "engines": {
     "node": "4.2.x"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.7.7"
   }
 }

@@ -1,0 +1,115 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'angular-resource@X.Y.Z' ]
+2 info using npm@2.15.1
+3 info using node@v4.4.3
+4 verbose install initial load of /Users/cbelth/Documents/cs252-lab6-node/package.json
+5 verbose installManyTop reading scoped package data from /Users/cbelth/Documents/cs252-lab6-node/node_modules/babel-cli/package.json
+6 verbose installManyTop reading scoped package data from /Users/cbelth/Documents/cs252-lab6-node/node_modules/body-parser/package.json
+7 verbose installManyTop reading scoped package data from /Users/cbelth/Documents/cs252-lab6-node/node_modules/cfenv/package.json
+8 verbose installManyTop reading scoped package data from /Users/cbelth/Documents/cs252-lab6-node/node_modules/express/package.json
+9 verbose installManyTop reading scoped package data from /Users/cbelth/Documents/cs252-lab6-node/node_modules/hashtable/package.json
+10 verbose installManyTop reading scoped package data from /Users/cbelth/Documents/cs252-lab6-node/node_modules/pg/package.json
+11 verbose installManyTop reading scoped package data from /Users/cbelth/Documents/cs252-lab6-node/node_modules/sha1/package.json
+12 verbose installManyTop reading scoped package data from /Users/cbelth/Documents/cs252-lab6-node/node_modules/socket.io/package.json
+13 verbose installManyTop reading scoped package data from /Users/cbelth/Documents/cs252-lab6-node/node_modules/ssh2/package.json
+14 verbose installManyTop reading scoped package data from /Users/cbelth/Documents/cs252-lab6-node/node_modules/term.js/package.json
+15 info package.json ssh2@0.5.0 No license field.
+16 verbose readDependencies loading dependencies from /Users/cbelth/Documents/cs252-lab6-node/package.json
+17 silly cache add args [ 'angular-resource@X.Y.Z', null ]
+18 verbose cache add spec angular-resource@X.Y.Z
+19 silly cache add parsed spec Result {
+19 silly cache add   raw: 'angular-resource@X.Y.Z',
+19 silly cache add   scope: null,
+19 silly cache add   name: 'angular-resource',
+19 silly cache add   rawSpec: 'X.Y.Z',
+19 silly cache add   spec: 'X.Y.Z',
+19 silly cache add   type: 'tag' }
+20 silly addNamed angular-resource@X.Y.Z
+21 verbose addNamed "X.Y.Z" is being treated as a dist-tag for angular-resource
+22 info addNameTag [ 'angular-resource', 'X.Y.Z' ]
+23 silly mapToRegistry name angular-resource
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'angular-resource',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   name: 'angular-resource',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/angular-resource
+28 verbose addNameTag registry:https://registry.npmjs.org/angular-resource not in flight; fetching
+29 verbose request uri https://registry.npmjs.org/angular-resource
+30 verbose request no auth needed
+31 info attempt registry request try #1 at 1:33:39 PM
+32 verbose request id 47147775a22bd116
+33 http request GET https://registry.npmjs.org/angular-resource
+34 http 200 https://registry.npmjs.org/angular-resource
+35 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+35 verbose headers   etag: '"SPWVHCS4OFRQ05RPBB4QG098"',
+35 verbose headers   'content-type': 'application/json',
+35 verbose headers   'content-encoding': 'gzip',
+35 verbose headers   'cache-control': 'max-age=300',
+35 verbose headers   'content-length': '9597',
+35 verbose headers   'accept-ranges': 'bytes',
+35 verbose headers   date: 'Tue, 26 Apr 2016 17:33:41 GMT',
+35 verbose headers   via: '1.1 varnish',
+35 verbose headers   age: '0',
+35 verbose headers   connection: 'keep-alive',
+35 verbose headers   'x-served-by': 'cache-dfw1846-DFW',
+35 verbose headers   'x-cache': 'MISS',
+35 verbose headers   'x-cache-hits': '0',
+35 verbose headers   'x-timer': 'S1461692020.835208,VS0,VE321',
+35 verbose headers   vary: 'Accept-Encoding' }
+36 silly get cb [ 200,
+36 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+36 silly get     etag: '"SPWVHCS4OFRQ05RPBB4QG098"',
+36 silly get     'content-type': 'application/json',
+36 silly get     'content-encoding': 'gzip',
+36 silly get     'cache-control': 'max-age=300',
+36 silly get     'content-length': '9597',
+36 silly get     'accept-ranges': 'bytes',
+36 silly get     date: 'Tue, 26 Apr 2016 17:33:41 GMT',
+36 silly get     via: '1.1 varnish',
+36 silly get     age: '0',
+36 silly get     connection: 'keep-alive',
+36 silly get     'x-served-by': 'cache-dfw1846-DFW',
+36 silly get     'x-cache': 'MISS',
+36 silly get     'x-cache-hits': '0',
+36 silly get     'x-timer': 'S1461692020.835208,VS0,VE321',
+36 silly get     vary: 'Accept-Encoding' } ]
+37 verbose get saving angular-resource to /Users/cbelth/.npm/registry.npmjs.org/angular-resource/.cache.json
+38 verbose correctMkdir /Users/cbelth/.npm correctMkdir not in flight; initializing
+39 silly addNameTag next cb for angular-resource with tag X.Y.Z
+40 verbose stack Error: No compatible version found: angular-resource@'X.Y.Z'
+40 verbose stack Valid install targets:
+40 verbose stack ["0.0.1","0.0.2","0.1.0","0.1.1","1.3.0-rc.5","1.3.0","1.3.1","1.3.2","1.3.3","1.3.4-build.3587","1.2.27","1.3.4","1.3.5","1.3.6","1.3.7","1.2.28","1.3.8","1.4.0-beta.0","1.3.9","1.3.10","1.4.0-beta.1","1.4.0-beta.2","1.3.11","1.4.0-beta.3","1.3.12","1.3.13","1.4.0-beta.4","1.3.14","1.4.0-beta.5","1.4.0-beta.6","1.3.15","1.4.0-rc.0","1.4.0-rc.1","1.4.0-rc.2","1.4.0","1.3.16","1.4.1","1.4.2","1.3.17","1.4.3","1.4.4","1.3.18","1.4.5","1.3.19","1.4.6","1.5.0-beta.0","1.2.29","1.3.20","1.4.7","1.5.0-beta.2","1.4.8","1.5.0-rc.0","1.5.0-rc.1","1.4.9","1.5.0-rc.2","1.5.0","1.5.1","1.4.10","1.5.2","1.5.3","1.5.5"]
+40 verbose stack
+40 verbose stack     at installTargetsError (/usr/local/lib/node_modules/npm/lib/cache/add-named.js:284:12)
+40 verbose stack     at next (/usr/local/lib/node_modules/npm/lib/cache/add-named.js:94:10)
+40 verbose stack     at RES (/usr/local/lib/node_modules/npm/node_modules/inflight/inflight.js:23:14)
+40 verbose stack     at f (/usr/local/lib/node_modules/npm/node_modules/once/once.js:17:25)
+40 verbose stack     at fixName (/usr/local/lib/node_modules/npm/lib/cache/add-named.js:29:5)
+40 verbose stack     at saved (/usr/local/lib/node_modules/npm/lib/cache/caching-client.js:173:7)
+40 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/polyfills.js:210:7
+40 verbose stack     at FSReqWrap.oncomplete (fs.js:82:15)
+41 verbose cwd /Users/cbelth/Documents/cs252-lab6-node
+42 error Darwin 15.4.0
+43 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "--save" "angular-resource@X.Y.Z"
+44 error node v4.4.3
+45 error npm  v2.15.1
+46 error code ETARGET
+47 error notarget No compatible version found: angular-resource@'X.Y.Z'
+47 error notarget Valid install targets:
+47 error notarget ["0.0.1","0.0.2","0.1.0","0.1.1","1.3.0-rc.5","1.3.0","1.3.1","1.3.2","1.3.3","1.3.4-build.3587","1.2.27","1.3.4","1.3.5","1.3.6","1.3.7","1.2.28","1.3.8","1.4.0-beta.0","1.3.9","1.3.10","1.4.0-beta.1","1.4.0-beta.2","1.3.11","1.4.0-beta.3","1.3.12","1.3.13","1.4.0-beta.4","1.3.14","1.4.0-beta.5","1.4.0-beta.6","1.3.15","1.4.0-rc.0","1.4.0-rc.1","1.4.0-rc.2","1.4.0","1.3.16","1.4.1","1.4.2","1.3.17","1.4.3","1.4.4","1.3.18","1.4.5","1.3.19","1.4.6","1.5.0-beta.0","1.2.29","1.3.20","1.4.7","1.5.0-beta.2","1.4.8","1.5.0-rc.0","1.5.0-rc.1","1.4.9","1.5.0-rc.2","1.5.0","1.5.1","1.4.10","1.5.2","1.5.3","1.5.5"]
+47 error notarget
+47 error notarget This is most likely not a problem with npm itself.
+47 error notarget In most cases you or one of your dependencies are requesting
+47 error notarget a package version that doesn't exist.
+47 error notarget
+47 error notarget It was specified as a dependency of 'NodejsStarterApp'
+48 verbose exit [ 1, true ]

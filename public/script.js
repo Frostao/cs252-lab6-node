@@ -52,7 +52,11 @@ var auth2 = {};
     }
   }
 
-	function onSignIn(googleUser) {
+  var portArray = [];
+  var usernameArray = [];
+  var hostArray = [];
+
+  function onSignIn(googleUser) {
     /* get fileds from text areas */
     var host = document.getElementById( 'host' ).value;
     var port = document.getElementById( 'port' ).value;
@@ -91,31 +95,6 @@ var auth2 = {};
         document.getElementById("TextArea").value = "noServerConnection";
       });
       console.log("post finished");
-
-
-      $.get( 
-        "/getConnections",
-        { email: profile.getEmail() },
-        function(data) {
-          /* lag callback result */
-          console.log( data );
-          if( data ) {
-            // document.getElementById( "TextArea" ).value += data;
-            // console.log(data);
-            for( i = 0; i < data.length; i++ ) {
-              console.log(data[i].connections);
-            }
-          }
-        }
-      ).done( function() {
-          console.log( "jQuery done" );
-          // document.getElementById("TextArea").value += prompt;
-      })
-      .fail( function() {
-          console.log( "jQuery failed" );
-          // document.getElementById("TextArea").value += prompt;
-      });
-
     } else {
       /* if user has not entered all fields, proceed into here */
       $( '#my-signin2' ).fadeOut(0);
@@ -127,25 +106,88 @@ var auth2 = {};
       
       //if field is left blank, highlight in red
       if(document.getElementById('host').value == "")
-	{
-   		$(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
-	}
-      if(document.getElementById('port').value == "")
-      	{
-		$(document.getElementById('port')).fadeIn().html('').css("border","1px solid red");
-	}
-      if(document.getElementById('username').value == "")
-      	{
-	      $(document.getElementById('username')).fadeIn().html('').css("border","1px solid red");
-	}
-      if(document.getElementById('password').value == "")
-      	{
-	      $(document.getElementById('password')).fadeIn().html('').css("border","1px solid red");
-    	}
+      {
+       $(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
       }
+      if(document.getElementById('port').value == "")
+      {
+        $(document.getElementById('port')).fadeIn().html('').css("border","1px solid red");
+      }
+      if(document.getElementById('username').value == "")
+      {
+        $(document.getElementById('username')).fadeIn().html('').css("border","1px solid red");
+      }
+      if(document.getElementById('password').value == "")
+      {
+        $(document.getElementById('password')).fadeIn().html('').css("border","1px solid red");
+      }
+  }
+
+      $.get( 
+        "/getConnections",
+        { email: profile.getEmail() },
+        function(data) {
+          /* lag callback result */
+          console.log( data );
+          if( data ) {
+            var host;
+            var options = '';
+            portArray = [];
+            username = [];
+            hostArray = [];
+            for( i = 0; i < data.length; i++ ) {
+              // console.log(data[i].connections);
+              options += '<option value="' + data[i].host + '" />';
+              hostArray[i] = data[i].host;
+              portArray[i] = data[i].port;
+              usernameArray[i] = data[i].username;
+              // var temp = data[i].connections;
+              // var array = temp.split( "," );
+              // for( j = 0; j < array.length; j++ ) {
+              //   console.log( array[i] );
+              //   if( j == 1 ) {
+              //     host = array[i];
+              //   }
+              // }
+              // console.log( temp.substring(temp.indexOf( ","), temp.length ) );
+            }
+            document.getElementById( 'connections' ).innerHTML = options;
+          }
+        }
+      ).done( function() {
+          console.log( "jQuery done" );
+      })
+      .fail( function() {
+          console.log( "jQuery failed" );
+      });
+
+
+
     /* update hello message */
 		document.getElementById( 'user' ).innerHTML =  'Hello, ' + profile.getName();
 	}
+
+
+/* this function is called when a host is selected from the drop-down list */
+$(function() {
+  $('#host').on('input',function() {
+    var host = document.getElementById( 'host' ).value;
+    // console.log( "input=" + document.getElementById( 'host' ).value );
+    var pos = hostArray.indexOf( host );
+    if ( typeof portArray[ pos ] === "undefined" ) {
+      document.getElementById( 'port' ).value = '';
+    } else {
+      document.getElementById( 'port' ).value = portArray[ pos ];
+    }
+    if( typeof usernameArray[ pos ] === "undefined" ) {
+      document.getElementById( 'username' ).value = '';
+    } else {
+      document.getElementById( 'username' ).value = usernameArray[ pos ];
+    }
+    $("#password").focus();
+  });
+});
+
   /* called when the signOut button is pressed */
 		function signOut() {
 			refreshValues( true );
@@ -279,23 +321,6 @@ var googleUser; // The current user.
     }
 
     updateGoogleUser();
-    }
-  }
-
-  var refreshPage = function() {
-    // refreshValues();
-    if (auth2) {
-      if (auth2.isSignedIn.get() == true) {
-        $('.loginWrapper').fadeOut(500);
-        $('.logoutWrapper').fadeIn(500);
-        $('#signOutButton').fadeIn(0);
-      } else {
-        $( '.logoutWrapper' ).fadeOut(0);
-        $( '#signOutButton').fadeOut(0);
-        $( '.loginWrapper' ).fadeIn(500);
-        document.getElementById( "enter" ).style.display='none';
-        $('#my-signin2').fadeIn(0);
-      }
     }
   }
 
