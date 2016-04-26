@@ -355,7 +355,9 @@ function checkConnection( email, name, host, port, username, password ) {
   			if(err) {
     			return console.error('could not connect to postgres', err);
   			}
-  			var request = 'SELECT EXISTS(SELECT CONNECTIONS FROM "connections" WHERE HOST LIKE \'' + host + '\')';
+  			var sumKey = email + name + host + port + username + password;
+  			var key = sha1( sumKey );
+  			var request = 'SELECT EXISTS(SELECT CONNECTIONS FROM "connections" WHERE KEY LIKE \'' + key + '\')';
   			console.log( "request=" + request );
   			client.query(request, function(err, result) {
     			if(err) {
@@ -365,6 +367,7 @@ function checkConnection( email, name, host, port, username, password ) {
 
     			if( !entryExists ) {
     				/* user doesn't exist, so add them */
+    				console.log( 'calling add' );
     				addConnection( email, name, host, port, username, password );
     			}
     			client.end();
@@ -374,22 +377,24 @@ function checkConnection( email, name, host, port, username, password ) {
 }
 
 function addConnection( email, name, host, port, username, password ) {
+	var sumKey = email + name + host + port + username + password;
+	var key = sha1( sumKey );
 	var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
 	var client = new pg.Client(conString);
-
+	console.log('add called');
 	/* add user */
 	client.connect(function(err) {
   		if(err) {
     		return console.error('could not connect to postgres', err);
   		}
   		var storePassword = sha1( password )
-  		var request = 'INSERT INTO CONNECTIONS VALUES (\'' + email + '\', \'' + host + '\', ' + port + ', \''+ username + '\', \'' + storePassword + '\' )';
+  		var request = 'INSERT INTO CONNECTIONS VALUES (\'' + key + '\', \'' + email + '\', \'' + host + '\', ' + port + ', \'' + username + '\' )';
   		console.log( "request=" + request );
   		client.query(request, function(err, result) {
     		if(err) {
       			return console.error('error running query', err);
     		}
-    		// console.log(result);
+    		console.log(result);
     		client.end();
   		});
 	});	
