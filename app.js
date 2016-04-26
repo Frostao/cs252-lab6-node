@@ -30,17 +30,6 @@ function handleData(data) {
 	console.log('STDOUT: ' + data);
 }
 
-app.get('/get', function(req, res) {
-
-	var user = req.query.user;
-
-	var cmd = req.query.line;
-
-
-	//use res.send(argument); to send information to client
-	//For example, if you want to send something from the database, use res.send(result); result is from database.
-	//res.send can be only called ONCE
-});
 
 app.get('/getConnections', function(req, res) {
 	var id = req.query.email;
