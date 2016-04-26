@@ -2,6 +2,8 @@ var auth2 = {};
 
   var prompt;
 
+  var isRunning = false;
+
   function signInPressed() {
     console.log("sign in pressed");
   }
@@ -270,6 +272,16 @@ var googleUser; // The current user.
         $('#my-signin2').fadeIn(0);
       }
     }
+  }
+
+  var returnToSelection = function() {
+    console.log('returnToSelection');
+    signOut();
+    // $('.loginWrapper').fadeIn(500);
+    // $('.logoutWrapper').fadeOut(0);
+    // $('#signOutButton').fadeIn(0);
+    // $('.body').getElementById( "enter" ).style.display='inline';
+    // $('#my-signin2').fadeOut(0);
   }
 
 
