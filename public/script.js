@@ -224,20 +224,22 @@ var auth2 = {};
 /* this function is called when a host is selected from the drop-down list */
 $(function() {
   $('#host').on('input',function() {
-    var host = document.getElementById( 'host' ).value;
+      if( document.getElementById( 'connections' ).innerHTML.localeCompare('') != 0) {
+      var host = document.getElementById( 'host' ).value;
     // console.log( "input=" + document.getElementById( 'host' ).value );
-    var pos = hostArray.indexOf( host );
-    if ( typeof portArray[ pos ] === "undefined" ) {
-      document.getElementById( 'port' ).value = '';
-    } else {
-      document.getElementById( 'port' ).value = portArray[ pos ];
+      var pos = hostArray.indexOf( host );
+      if ( typeof portArray[ pos ] === "undefined" ) {
+        document.getElementById( 'port' ).value = '';
+      } else {
+        document.getElementById( 'port' ).value = portArray[ pos ];
+      }
+      if( typeof usernameArray[ pos ] === "undefined" ) {
+        document.getElementById( 'username' ).value = '';
+      } else {
+        document.getElementById( 'username' ).value = usernameArray[ pos ];
+      }
+      $("#password").focus();
     }
-    if( typeof usernameArray[ pos ] === "undefined" ) {
-      document.getElementById( 'username' ).value = '';
-    } else {
-      document.getElementById( 'username' ).value = usernameArray[ pos ];
-    }
-    $("#password").focus();
   });
 });
 
@@ -418,6 +420,9 @@ $(document).keypress(function(e) {
   /* enter pressed */
   if( e.which == 13 ) {
     /* treat this as login */
+    // console.log( 'enter' );
+    $("#my-signin2").focus();
+
   }
 });
 
