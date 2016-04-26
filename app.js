@@ -67,6 +67,30 @@ app.get('/get', function(req, res) {
 	console.log(user);
 });
 
+app.get('/getConnections', function(req, res) {
+	var id = req.query.email;
+	console.log('/getConnections');
+
+	var conString = process.env.ELEPHANTSQL_URL || "postgres://nouhpzho:kxh5OnjhtkIG_bpoOhkjIlDtTat6_vIK@pellefant.db.elephantsql.com:5432/nouhpzho";
+
+	var client = new pg.Client(conString);
+
+	client.connect(function(err) {
+  		if(err) {
+    		return console.error('could not connect to postgres', err);
+  		}
+  		var request = 'SELECT CONNECTIONS FROM "connections" WHERE ID LIKE \'' + id + '\'';
+  		console.log( "request=" + request );
+  		client.query(request, function(err, result) {
+    		if(err) {
+    			return console.error('error running query', err);
+   			}
+   			res.send( result.rows );
+    		client.end();
+  		});
+	});
+});
+
 app.post('/test-post', function(req, res) {
 	var host = req.body.host;
 	var port = req.body.port;
@@ -210,10 +234,11 @@ function getConnections( email ) {
     		}
     		console.log(result.rows[0].connections);
     		connections = result.rows[0].connections;
+    		return connections;
     		client.end();
   		});
 	});
-	return connections;
+	// return connections;
 }
 
 /* get the top connection from the users connection list */
@@ -226,18 +251,18 @@ function getTopConnection( email ) {
   		if(err) {
     		return console.error('could not connect to postgres', err);
   		}
-  		var request = 'SELECT EXISTS(SELECT CONNECTIONS FROM "connections" WHERE HOST LIKE \'' + host + '\')';
+  		var request = 'SELECT EXISTS(SELECT CONNECTIONS FROM "connections" WHERE ID LIKE \'' + email + '\')';
   		console.log( "request=" + request );
   		client.query(request, function(err, result) {
     		if(err) {
     			return console.error('error running query', err);
    			}
-   			entryExists = result.rows[0].exists;
-
-    		if( !entryExists ) {
+   			// entryExists = result.rows[0].exists;
+   			return actuallyGetTopConnection( email );
+    		// if( !entryExists ) {
     			/* user doesn't exist, so add them */
-    			return actuallyGetTopConnection( email );
-    		}
+    			// return actuallyGetTopConnection( email );
+    		// }
     		client.end();
   		});
 	});
@@ -252,14 +277,14 @@ function actuallyGetTopConnection( email ) {
   		if(err) {
     		return console.error('could not connect to postgres', err);
   		}
-  		var request = 'SELECT EXISTS(SELECT CONNECTIONS FROM "connections" WHERE HOST LIKE \'' + host + '\')';
+  		var request = 'SELECT CONNECTIONS FROM "connections" WHERE ID LIKE \'' + email + '\'';
   		console.log( "request=" + request );
   		client.query(request, function(err, result) {
     		if(err) {
     			return console.error('error running query', err);
    			}
    			console.log(result);
-
+   			return result;
     		client.end();
   		});
 	});

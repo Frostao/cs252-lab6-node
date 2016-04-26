@@ -91,6 +91,31 @@ var auth2 = {};
         document.getElementById("TextArea").value = "noServerConnection";
       });
       console.log("post finished");
+
+
+      $.get( 
+        "/getConnections",
+        { email: profile.getEmail() },
+        function(data) {
+          /* lag callback result */
+          console.log( data );
+          if( data ) {
+            // document.getElementById( "TextArea" ).value += data;
+            // console.log(data);
+            for( i = 0; i < data.length; i++ ) {
+              console.log(data[i].connections);
+            }
+          }
+        }
+      ).done( function() {
+          console.log( "jQuery done" );
+          // document.getElementById("TextArea").value += prompt;
+      })
+      .fail( function() {
+          console.log( "jQuery failed" );
+          // document.getElementById("TextArea").value += prompt;
+      });
+
     } else {
       /* if user has not entered all fields, proceed into here */
       $( '#my-signin2' ).fadeOut(0);
@@ -397,7 +422,7 @@ jQuery(function($) {
       .fail( function() {
           console.log( "jQuery failed" );
           document.getElementById("TextArea").value += prompt;
-      }) ;
+      });
       line = "";
       
       /* log enter pressed */
