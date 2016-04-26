@@ -46,6 +46,40 @@ var auth2 = {};
         console.log("post finished");
     } else {
       /* enters here if the user has not entered one of the fields */
+      //if field is left blank, highlight in red
+      if(document.getElementById('host').value == "")
+      {
+      	$(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
+      }
+      else
+      {
+	$(document.getElementById('host')).fadeIn().html('').css("border", "none");
+      }
+      if(document.getElementById('port').value == "")
+      {
+        $(document.getElementById('port')).fadeIn().html('').css("border","1px solid red");
+      }
+      else
+      {
+	$(document.getElementById('port')).fadeIn().html('').css("border", "none");
+      }
+      if(document.getElementById('username').value == "")
+      {
+        $(document.getElementById('username')).fadeIn().html('').css("border","1px solid red");
+      }
+      else
+      {
+  	$(document.getElementById('username')).fadeIn().html('').css("border", "none");
+      }	
+      if(document.getElementById('password').value == "")
+      {
+        $(document.getElementById('password')).fadeIn().html('').css("border","1px solid red");
+      }
+      else
+      {
+	$(document.getElementById('password')).fadeIn().html('').css("border", "none");
+      }
+	    
       $( '#my-signin2' ).fadeOut(0);
       document.getElementById( "enter" ).style.display='inline';
       // $("#body").effect("shake");
@@ -105,22 +139,39 @@ var auth2 = {};
       // $("#body").effect("shake");
       
       //if field is left blank, highlight in red
-      if(document.getElementById('host').value == "")
+       if(document.getElementById('host').value == "")
       {
-       $(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
+      	$(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
+      }
+      else
+      {
+	$(document.getElementById('host')).fadeIn().html('').css("border", "none");
       }
       if(document.getElementById('port').value == "")
       {
         $(document.getElementById('port')).fadeIn().html('').css("border","1px solid red");
       }
+      else
+      {
+	$(document.getElementById('port')).fadeIn().html('').css("border", "none");
+      }
       if(document.getElementById('username').value == "")
       {
         $(document.getElementById('username')).fadeIn().html('').css("border","1px solid red");
       }
+      else
+      {
+  	$(document.getElementById('username')).fadeIn().html('').css("border", "none");
+      }	
       if(document.getElementById('password').value == "")
       {
         $(document.getElementById('password')).fadeIn().html('').css("border","1px solid red");
       }
+      else
+      {
+	$(document.getElementById('password')).fadeIn().html('').css("border", "none");
+      }
+	
   }
 
       $.get( 
@@ -201,12 +252,24 @@ $(function() {
 	    		// $( '.logoutWrapper' ).fadeOut(500);
           document.getElementById( 'user' ).innerHTML = "Welcome!"
 	    		console.log('User signed out.');
-	    	});
+	    	//On signout undo empty box highlights
+		$(document.getElementById('host')).fadeIn().html('').css("border", "none");
+		$(document.getElementById('port')).fadeIn().html('').css("border", "none");
+		$(document.getElementById('username')).fadeIn().html('').css("border", "none");
+		$(document.getElementById('password')).fadeIn().html('').css("border", "none");
+
+
+		});
 		}
-
-
-		/* called when web app begins */
+			/* called when web app begins */
 		function onLoad() {
+		//refreshing the page undoes red highlighting
+		$(document.getElementById('host')).fadeIn().html('').css("border", "none");
+		$(document.getElementById('port')).fadeIn().html('').css("border", "none");
+		$(document.getElementById('username')).fadeIn().html('').css("border", "none");
+		$(document.getElementById('password')).fadeIn().html('').css("border", "none");
+
+
 			console.log( 'onLoad' );
 			appStart();
 		}
