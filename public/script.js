@@ -231,7 +231,11 @@ $(function() {
       } else {
         document.getElementById( 'username' ).value = usernameArray[ pos ];
       }
-      $("#password").focus();
+      if( typeof portArray[ pos ] === "undefined" && typeof usernameArray[ pos ] === "undefined" ) {
+
+      } else {
+        $("#password").focus();
+      }
     }
   });
 });
