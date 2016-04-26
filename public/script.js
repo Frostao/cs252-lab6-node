@@ -250,11 +250,9 @@ $(function() {
         document.getElementById( 'port' ).value = "";
         document.getElementById( 'username' ).value = "";
         document.getElementById( 'password' ).value = "";
-	    		// $( '.g-signin2' ).fadeIn(500);
-	    		// $( '.logoutWrapper' ).fadeOut(500);
-          document.getElementById( 'user' ).innerHTML = "Welcome!"
-	    		console.log('User signed out.');
-	    	//On signout undo empty box highlights
+        document.getElementById( 'user' ).innerHTML = "Welcome!"
+	    	console.log('User signed out.');
+        document.getElementById( 'connections' ).innerHTML = '';
 		$(document.getElementById('host')).fadeIn().html('').css("border", "none");
 		$(document.getElementById('port')).fadeIn().html('').css("border", "none");
 		$(document.getElementById('username')).fadeIn().html('').css("border", "none");
