@@ -3,7 +3,7 @@ var auth2 = {};
   var prompt;
 
   function signInPressed() {
-    console.log("sgin in pressed");
+    console.log("sign in pressed");
   }
 
   /* called when user clicks "enter" (that's its id in index.html) button */
@@ -97,7 +97,25 @@ var auth2 = {};
       refreshValues(false);
       profile = googleUser.getBasicProfile();
       // $("#body").effect("shake");
-    }
+      
+      //if field is left blank, highlight in red
+      if(document.getElementById('host').value == "")
+	{
+   		$(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
+	}
+      if(document.getElementById('port').value == "")
+      	{
+		$(document.getElementById('port')).fadeIn().html('').css("border","1px solid red");
+	}
+      if(document.getElementById('username').value == "")
+      	{
+	      $(document.getElementById('username')).fadeIn().html('').css("border","1px solid red");
+	}
+      if(document.getElementById('password').value == "")
+      	{
+	      $(document.getElementById('password')).fadeIn().html('').css("border","1px solid red");
+    	}
+      }
     /* update hello message */
 		document.getElementById( 'user' ).innerHTML =  'Hello, ' + profile.getName();
 	}
