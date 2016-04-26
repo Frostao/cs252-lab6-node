@@ -36,35 +36,10 @@ app.get('/get', function(req, res) {
 
 	var cmd = req.query.line;
 
-	var conn = hashtable.get(user);
 
-	var output = "";
-
-	
-	conn.shell(function(err, stream) {
-
-		if (err) throw err;
-
-		stream.on('close', function() {
-			console.log('Stream :: close');
-				//conn.end();
-			}).on('data', function(data) {
-				console.log('STDOUT: ' + data);
-				output = output + data;
-			}).stderr.on('data', function(data) {
-				console.log('STDERR: ' + data);
-			});
-			stream.write(cmd+'\n');
-		});
-
-	setTimeout(function() {
-
-		res.send(output);
-
-	}, 500);
-	console.log("output is " + output);
-
-	console.log(user);
+	//use res.send(argument); to send information to client
+	//For example, if you want to send something from the database, use res.send(result); result is from database.
+	//res.send can be only called ONCE
 });
 
 app.get('/getConnections', function(req, res) {
