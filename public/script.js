@@ -139,6 +139,7 @@ var auth2 = {};
       // $("#body").effect("shake");
       refreshValues(false);
       profile = googleUser.getBasicProfile();
+      $("#host").focus();
       // $("#body").effect("shake");
       
       //if field is left blank, highlight in red
