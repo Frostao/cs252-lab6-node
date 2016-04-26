@@ -2,18 +2,20 @@
  * This file provides css styles.
  */
 
+ @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,500,300italic,500italic,700italic,900,300);
+
  body,html {
  	/*background-color: #3b4b54; width : 100%;*/
  	background-color: #8C1515;
  	height: 100%;
  	margin: 0 auto;
- 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+ 	font-family: "Roboto", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
  	/*color: #ffffff;*/
  }
 
  .loginWrapper{
  	margin: 0 auto;
-/* 	padding: 80px 0; */
+	/*background-image: url("mb-bg-fb-01.png");*/
  	height: 100%;
  	text-align: center;
  	background-color: #3b4b54;
@@ -24,11 +26,23 @@
 .form {
 	margin: auto;
 }
-/* md-toolbar */
 
-.md-select.default {
-	background-color: #000000;
+#instructions1 {
+  	font-size:25px;
+	font-weight:400;
+	line-height:64px;
+  	color: #ffffff;
+  	font-family: "Roboto", sans-serif;
 }
+
+#instructions2 {
+  	font-size:25px;
+	font-weight:400;
+	line-height:64px;
+  	color: #ffffff;
+  	font-family: "Roboto", sans-serif;
+}
+
 /* md-toolbar */
 
  .main-header {

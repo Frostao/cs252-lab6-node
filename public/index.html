@@ -36,10 +36,10 @@
 
   <md-toolbar md-scroll-shrink>
     <div class="md-toolbar-tools" md-theme="default">  
-      <h3>Online ssh/sftp Server</h3>  
+      <h3 style="font-weight: 400px;" >Online SSH Client</h3>  
       <span flex></span>
       <h1 id = "message"></h1>
-      <h2 id = "user">Welcome!</h2>
+      <h2 id = "user" style="=font-weight:400;">Welcome!</h2>
       <pre>  </pre>
       <md-button class="md-raised md-primary" id="signOutButton" onclick="signOut()"><span>Sign Out</span> </md-button>
     </div>
@@ -65,8 +65,10 @@
   <input type="text" placeholder="port" id="port"><br>
   <input type="text" placeholder="username" id="username"><br>
   <input type="password" placeholder="password" id="password"><br>
+  <p id="instructions1" style="display: block;">Sign in to see previous connections</p>
   <div class="my-signin2" id="my-signin2" onclick="signInPressed()" data-onsuccess="onSignIn" ng-keypress="$event.which == 13"></div><br>
-  <md-button class="md-raised md-primary" id="enter" onclick="credentials()" style="display: none;"><span>Continue</span> </md-button>
+  <p id="instructions2" style="display: block;">Or continue with this connection without signing in</p>
+  <md-button class="md-raised md-primary" id="enter" onclick="credentials()" style="display: inline;"><span>Continue</span> </md-button>
 </form>
 
 <datalist id="connections">

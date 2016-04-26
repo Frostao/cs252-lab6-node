@@ -99,6 +99,8 @@ var auth2 = {};
       /* if user has not entered all fields, proceed into here */
       $( '#my-signin2' ).fadeOut(0);
       document.getElementById( "enter" ).style.display='inline';
+      document.getElementById( "instructions1" ).style.display='none';
+      document.getElementById( "instructions2" ).style.display='none';
       // $("#body").effect("shake");
       refreshValues(false);
       profile = googleUser.getBasicProfile();
@@ -305,11 +307,15 @@ var googleUser; // The current user.
       	$('.loginWrapper').fadeOut(500);
       	$('.logoutWrapper').fadeIn(500);
         $('#signOutButton').fadeIn(0);
+        document.getElementById( "instructions1" ).style.display='none';
+        document.getElementById( "instructions2" ).style.display='none';
       } else {
       	$( '.logoutWrapper' ).fadeOut(0);
         $( '#signOutButton').fadeOut(0);
-      	$( '.loginWrapper' ).fadeIn(500);
-        document.getElementById( "enter" ).style.display='none';
+      	$( '.loginWrapper' ).fadeIn(50);
+        document.getElementById( "instructions1" ).style.display='block';
+        document.getElementById( "instructions2" ).style.display='block';
+        document.getElementById( "enter" ).style.display='inline';
         $('#my-signin2').fadeIn(0);
       }
     } else {
