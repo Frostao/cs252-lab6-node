@@ -133,7 +133,8 @@ var auth2 = {};
       /* if user has not entered all fields, proceed into here */
       $( '#my-signin2' ).fadeOut(0);
       document.getElementById( "enter" ).style.display='inline';
-      document.getElementById( "instructions1" ).style.display='none';
+      // document.getElementById( "instructions1" ).style.display='none';
+      document.getElementById( "instructions1" ).innerHTML = "Signed In. Pick a connection."
       document.getElementById( "instructions2" ).style.display='none';
       // $("#body").effect("shake");
       refreshValues(false);
@@ -141,38 +142,38 @@ var auth2 = {};
       // $("#body").effect("shake");
       
       //if field is left blank, highlight in red
-       if(document.getElementById('host').value == "")
-      {
-      	$(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
-      }
-      else
-      {
-	$(document.getElementById('host')).fadeIn().html('').css("border", "none");
-      }
-      if(document.getElementById('port').value == "")
-      {
-        $(document.getElementById('port')).fadeIn().html('').css("border","1px solid red");
-      }
-      else
-      {
-	$(document.getElementById('port')).fadeIn().html('').css("border", "none");
-      }
-      if(document.getElementById('username').value == "")
-      {
-        $(document.getElementById('username')).fadeIn().html('').css("border","1px solid red");
-      }
-      else
-      {
-  	$(document.getElementById('username')).fadeIn().html('').css("border", "none");
-      }	
-      if(document.getElementById('password').value == "")
-      {
-        $(document.getElementById('password')).fadeIn().html('').css("border","1px solid red");
-      }
-      else
-      {
-	$(document.getElementById('password')).fadeIn().html('').css("border", "none");
-      }
+ //       if(document.getElementById('host').value == "")
+ //      {
+ //      	$(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
+ //      }
+ //      else
+ //      {
+	// $(document.getElementById('host')).fadeIn().html('').css("border", "none");
+ //      }
+ //      if(document.getElementById('port').value == "")
+ //      {
+ //        $(document.getElementById('port')).fadeIn().html('').css("border","1px solid red");
+ //      }
+ //      else
+ //      {
+	// $(document.getElementById('port')).fadeIn().html('').css("border", "none");
+ //      }
+ //      if(document.getElementById('username').value == "")
+ //      {
+ //        $(document.getElementById('username')).fadeIn().html('').css("border","1px solid red");
+ //      }
+ //      else
+ //      {
+ //  	$(document.getElementById('username')).fadeIn().html('').css("border", "none");
+ //      }	
+ //      if(document.getElementById('password').value == "")
+ //      {
+ //        $(document.getElementById('password')).fadeIn().html('').css("border","1px solid red");
+ //      }
+ //      else
+ //      {
+	// $(document.getElementById('password')).fadeIn().html('').css("border", "none");
+ //      }
 	
   }
 
@@ -194,15 +195,6 @@ var auth2 = {};
               hostArray[i] = data[i].host;
               portArray[i] = data[i].port;
               usernameArray[i] = data[i].username;
-              // var temp = data[i].connections;
-              // var array = temp.split( "," );
-              // for( j = 0; j < array.length; j++ ) {
-              //   console.log( array[i] );
-              //   if( j == 1 ) {
-              //     host = array[i];
-              //   }
-              // }
-              // console.log( temp.substring(temp.indexOf( ","), temp.length ) );
             }
             document.getElementById( 'connections' ).innerHTML = options;
           }
@@ -244,23 +236,24 @@ $(function() {
 });
 
   /* called when the signOut button is pressed */
-		function signOut() {
-			refreshValues( true );
-			var auth2 = gapi.auth2.getAuthInstance();
-			auth2.signOut().then(function () {
-        document.getElementById( 'host' ).value = "";
-        document.getElementById( 'port' ).value = "";
-        document.getElementById( 'username' ).value = "";
-        document.getElementById( 'password' ).value = "";
-        document.getElementById( 'user' ).innerHTML = "Welcome!"
-	    	console.log('User signed out.');
-        document.getElementById( 'connections' ).innerHTML = '';
-		$(document.getElementById('host')).fadeIn().html('').css("border", "none");
-		$(document.getElementById('port')).fadeIn().html('').css("border", "none");
-		$(document.getElementById('username')).fadeIn().html('').css("border", "none");
-		$(document.getElementById('password')).fadeIn().html('').css("border", "none");
-
-
+  function signOut() {
+    refreshValues( true );
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      document.getElementById( 'host' ).value = "";
+      document.getElementById( 'port' ).value = "";
+      document.getElementById( 'username' ).value = "";
+      document.getElementById( 'password' ).value = "";
+      document.getElementById( 'user' ).innerHTML = "Welcome!"
+	    console.log('User signed out.');
+      document.getElementById( 'connections' ).innerHTML = '';
+      /* remove boarders from empty fields */
+		  $(document.getElementById('host')).fadeIn().html('').css("border", "none");
+		  $(document.getElementById('port')).fadeIn().html('').css("border", "none");
+		  $(document.getElementById('username')).fadeIn().html('').css("border", "none");
+		  $(document.getElementById('password')).fadeIn().html('').css("border", "none");
+      /* reset instructions for login screen */
+      document.getElementById( "instructions1" ).innerHTML = "Enter a new connection..."
 		});
 		}
 			/* called when web app begins */
@@ -378,7 +371,7 @@ var googleUser; // The current user.
       	$( '.loginWrapper' ).fadeIn(50);
         document.getElementById( "instructions1" ).style.display='block';
         document.getElementById( "instructions2" ).style.display='block';
-        document.getElementById( "enter" ).style.display='inline';
+        document.getElementById( "enter" ).style.display='none';
         $('#my-signin2').fadeIn(0);
       }
     } else {
