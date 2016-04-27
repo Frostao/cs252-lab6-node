@@ -142,39 +142,7 @@ var auth2 = {};
       $("#host").focus();
       // $("#body").effect("shake");
       
-      //if field is left blank, highlight in red
- //       if(document.getElementById('host').value == "")
- //      {
- //      	$(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
- //      }
- //      else
- //      {
-	// $(document.getElementById('host')).fadeIn().html('').css("border", "none");
- //      }
- //      if(document.getElementById('port').value == "")
- //      {
- //        $(document.getElementById('port')).fadeIn().html('').css("border","1px solid red");
- //      }
- //      else
- //      {
-	// $(document.getElementById('port')).fadeIn().html('').css("border", "none");
- //      }
- //      if(document.getElementById('username').value == "")
- //      {
- //        $(document.getElementById('username')).fadeIn().html('').css("border","1px solid red");
- //      }
- //      else
- //      {
- //  	$(document.getElementById('username')).fadeIn().html('').css("border", "none");
- //      }	
- //      if(document.getElementById('password').value == "")
- //      {
- //        $(document.getElementById('password')).fadeIn().html('').css("border","1px solid red");
- //      }
- //      else
- //      {
-	// $(document.getElementById('password')).fadeIn().html('').css("border", "none");
- //      }
+
 	
   }
 
@@ -418,40 +386,10 @@ $(document).keypress(function(e) {
   /* enter pressed */
   if( e.which == 13 ) {
     /* treat this as login */
-    // console.log( 'enter' );
-    $("#my-signin2").focus();
+    $("#enter").click();
 
   }
 });
-
-    /* md-header */
-
-// angular.module('myApp', ['ngMaterial'])
-// .config(function($mdThemingProvider) {
-//   $mdThemingProvider.theme('default')
-//     .primaryPalette('pink')
-//     .accentPalette('orange');
-// });
-  
-  /* md-header */
-
-
-
-
-// jQuery(document).ready(function($) {
-//     var max = 4;
-//     $('textarea').keypress(function(e) {
-//         console.log( "jQuery: " + e.which );
-//         /* if enter is pressed, prevent the default */
-//         if (e.which == 13) {
-//             console.log( "jQuery: " + e.which );
-//             // e.preventDefault();
-//         } else if (this.value.length > max) {
-//             // Maximum exceeded
-//             // this.value = this.value.substring(0, max);
-//         }
-//     });
-// });
 
 
 /* line to store each line of textarea */
@@ -544,25 +482,7 @@ jQuery(function($) {
   };
 
 
-  /* md-toolbar */
-  // app.config(function($mdThemingProvider) {
-  //   var customBlueMap = 		$mdThemingProvider.extendPalette('light-blue', {
-  //     'contrastDefaultColor': 'light',
-  //     'contrastDarkColors': ['50'],
-  //     '50': 'ffffff'
-  //   });
-  //   $mdThemingProvider.definePalette('customBlue', customBlueMap);
-  //   $mdThemingProvider.theme('default')
-  //   .primaryPalette('customBlue', {
-  //     'default': '500',
-  //     'hue-1': '50'
-  //   })
-  //   .accentPalette('pink');
-  //   $mdThemingProvider.theme('input', 'default')
-  //   .primaryPalette('grey')
-  // });
-  /* md-toolbar */
-
+ 
   function expand() {
     $scope.autoExpand('TextArea');
   }
