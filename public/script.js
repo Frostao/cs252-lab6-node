@@ -28,16 +28,17 @@ var auth2 = {};
         password: password,
         googleName: profile.getName(),
         googleEmail: profile.getEmail()
-            // user: googleUser.El
         },
         function(data,status){
-          //alert("Data: " + data + "\nStatus: " + status);
+          /* signed in */
           var event = new Event('signedIn');
+          /* created iframe for terminal */
           var iframeWindow = document.getElementById("iframe").contentWindow; 
+          /* dispatch iframe */
           iframeWindow.dispatchEvent(event);
         }).fail( function() {
+          /* post failed */
           console.log( "jQuery post failed" );
-          document.getElementById("TextArea").value = "noServerConnection";
         });
         console.log("post finished");
     } else {
@@ -78,7 +79,6 @@ var auth2 = {};
 	    
       $( '#my-signin2' ).fadeOut(0);
       document.getElementById( "enter" ).style.display='inline';
-      // $("#body").effect("shake");
     }
   }
 
@@ -124,14 +124,15 @@ var auth2 = {};
         // user: googleUser.El
       },
       function(data,status){
+        /* signed in */
         var event = new Event('signedIn');
         /* get iframe */
         var iframeWindow = document.getElementById("iframe").contentWindow; 
         /* dispatch event on iframe object */
         iframeWindow.dispatchEvent(event);
       }).fail( function() {
+        /* post failed */
         console.log( "jQuery post failed" );
-        document.getElementById("TextArea").value = "noServerConnection";
       });
       console.log("post finished");
     } else {
@@ -248,8 +249,8 @@ $(function() {
 		  appStart();
 		}
 
-
-var googleUser; // The current user.
+/* current user */
+var googleUser;
 
 /**
  * Calls startAuth after Sign in V2 finishes setting up.
@@ -266,23 +267,22 @@ var googleUser; // The current user.
  */
  var initSigninV2 = function() {
  	console.log( 'initSigninV2' );
-	// auth2 = gapi.auth2.init({
-    // client_id: 'CLIENT_ID.apps.googleusercontent.com',
-    // scope: 'profile'
-// });
+
+  /* get an instance of auth2 */
   auth2 = gapi.auth2.getAuthInstance();
 
-  // Listen for sign-in state changes.
+  /* Listen for sign-in state changes. */
   auth2.isSignedIn.listen(signinChanged);
 
-  // Listen for changes to current user.
+  /* Listen for changes to current user. */
   auth2.currentUser.listen(userChanged);
 
-  // Sign in the user if they are currently signed in.
+  /* Sign in the user if they are currently signed in. */
   if (auth2.isSignedIn.get() == true) {
+    /* sign in the user officially */
   	auth2.signIn();
   } 
-  // Start with the current live values.
+  /* Start with the current live values. Also update GUI appropriatley */
   refreshValues(true);
 };
 
@@ -291,7 +291,7 @@ var googleUser; // The current user.
  *
  * @param {boolean} val the updated signed out state.
  */
- var signinChanged = function (val) {
+var signinChanged = function (val) {
  	console.log('Signin state changed to ', val);
  	refreshValues(!val);
   // document.getElementById('signed-in-cell').innerText = val;
@@ -302,12 +302,10 @@ var googleUser; // The current user.
  *
  * @param {GoogleUser} user the updated user.
  */
- var userChanged = function (user) {
+var userChanged = function (user) {
  	console.log('User now: ', user);
  	googleUser = user;
-  // document.getElementById('curr-user-cell').innerText =
-    // JSON.stringify(user, undefined, 2);
-  };
+};
 
 /**
  * Retrieves the current user and signed in states from the GoogleAuth
@@ -321,6 +319,7 @@ var googleUser; // The current user.
  		googleUser = auth2.currentUser.get();
 
     if( shouldChange ) {
+      /* if we should update GUI */
       if (auth2.isSignedIn.get() == true) {
         /* user logged in, so go to terminal page */
       	$('.loginWrapper').fadeOut(500);
@@ -340,16 +339,19 @@ var googleUser; // The current user.
         $('#my-signin2').fadeIn(0);
       }
     } else {
+      /* if we should not update GUI */
       if (auth2.isSignedIn.get() == true) {
+        /* we still need to update the sign out button */
         $('#signOutButton').fadeIn(0);
       } else {
+        /* we still need to update the sign out button */
         $( '#signOutButton').fadeOut(0);
       }
     }
     }
   }
 
-  /* TODO adjusting box */
+  /* angular theme */
   var app = angular.module('myApp', ['ngMaterial'])
   .config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
@@ -368,14 +370,14 @@ $(document).keypress(function(e) {
       /* treat this as login */
       $("#enter").click();
     }
-
   }
 });
 
-
-
+  
+/* when window closed */
 window.addEventListener('signedOut', function() {
     console.log('signedOut');
+    /* reload page */
     location.reload();
   }, false);
 
