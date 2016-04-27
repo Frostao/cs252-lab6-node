@@ -136,14 +136,9 @@ var auth2 = {};
       // document.getElementById( "instructions1" ).style.display='none';
       document.getElementById( "instructions1" ).innerHTML = "Signed In. Pick a connection."
       document.getElementById( "instructions2" ).style.display='none';
-      // $("#body").effect("shake");
       refreshValues(false);
       profile = googleUser.getBasicProfile();
       $("#host").focus();
-      // $("#body").effect("shake");
-      
-
-	
   }
 
       $.get( 
@@ -155,11 +150,12 @@ var auth2 = {};
           if( data ) {
             var host;
             var options = '';
+            /* clear portArray */
             portArray = [];
-            username = [];
+            /* clear usernameArray */
+            usernameArray = [];
             hostArray = [];
             for( i = 0; i < data.length; i++ ) {
-              // console.log(data[i].connections);
               options += '<option value="' + data[i].host + '" />';
               hostArray[i] = data[i].host;
               portArray[i] = data[i].port;
@@ -174,9 +170,6 @@ var auth2 = {};
       .fail( function() {
           console.log( "jQuery failed" );
       });
-
-
-
     /* update hello message */
 		document.getElementById( 'user' ).innerHTML =  'Hello, ' + profile.getName();
 	}
@@ -385,8 +378,11 @@ var googleUser; // The current user.
 $(document).keypress(function(e) {
   /* enter pressed */
   if( e.which == 13 ) {
-    /* treat this as login */
-    $("#enter").click();
+    /* if signed in, continue */
+    if( document.getElementById( "enter" ).style.display !== 'none' ) {
+      /* treat this as login */
+      $("#enter").click();
+    }
 
   }
 });
