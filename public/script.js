@@ -376,5 +376,6 @@ $(document).keypress(function(e) {
 
 window.addEventListener('signedOut', function() {
     console.log('signedOut');
+    location.reload();
   }, false);
 
