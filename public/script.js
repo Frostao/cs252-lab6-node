@@ -567,3 +567,9 @@ jQuery(function($) {
     $scope.autoExpand('TextArea');
   }
 }]);
+
+
+
+window.addEventListener('signedOut', function() {
+    console.log('signedOut');
+  }, false);

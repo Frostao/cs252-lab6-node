@@ -31,6 +31,10 @@ window.addEventListener('signedIn', function() {
 
     socket.on('disconnect', function() {
       term.destroy();
+      console.log("disconnectted");
+      var event = new Event('signedOut');
+      window.parent.window.dispatchEvent(event);
     });
   });
+  
 }, false);
