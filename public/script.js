@@ -1,9 +1,5 @@
 var auth2 = {};
 
-  var prompt;
-
-  var isRunning = false;
-
   function signInPressed() {
     console.log("sign in pressed");
   }
@@ -46,14 +42,14 @@ var auth2 = {};
         console.log("post finished");
     } else {
       /* enters here if the user has not entered one of the fields */
-      //if field is left blank, highlight in red
+      /* if field is left blank, highlight in red */
       if(document.getElementById('host').value == "")
       {
       	$(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
       }
       else
       {
-	$(document.getElementById('host')).fadeIn().html('').css("border", "none");
+        $(document.getElementById('host')).fadeIn().html('').css("border", "none");
       }
       if(document.getElementById('port').value == "")
       {
@@ -61,7 +57,7 @@ var auth2 = {};
       }
       else
       {
-	$(document.getElementById('port')).fadeIn().html('').css("border", "none");
+        $(document.getElementById('port')).fadeIn().html('').css("border", "none");
       }
       if(document.getElementById('username').value == "")
       {
@@ -69,7 +65,7 @@ var auth2 = {};
       }
       else
       {
-  	$(document.getElementById('username')).fadeIn().html('').css("border", "none");
+        $(document.getElementById('username')).fadeIn().html('').css("border", "none");
       }	
       if(document.getElementById('password').value == "")
       {
@@ -77,7 +73,7 @@ var auth2 = {};
       }
       else
       {
-	$(document.getElementById('password')).fadeIn().html('').css("border", "none");
+        $(document.getElementById('password')).fadeIn().html('').css("border", "none");
       }
 	    
       $( '#my-signin2' ).fadeOut(0);
@@ -86,8 +82,12 @@ var auth2 = {};
     }
   }
 
+  /* arrays for connections */
+  /* array of ports */
   var portArray = [];
+  /* array of usernames */
   var usernameArray = [];
+  /* array of hosts */
   var hostArray = [];
 
   function onSignIn(googleUser) {
@@ -108,7 +108,11 @@ var auth2 = {};
       console.log( 'host: ' + host );
       console.log( 'port: ' + port );
 
-      // console.log("user = " + googleUser.El );
+      /* would be Google user if ever useful: 
+      console.log("user = " + googleUser.El ); 
+      */
+
+      /* post request upon login */
       $.post("/connect",
       {
         host: host,
@@ -120,9 +124,10 @@ var auth2 = {};
         // user: googleUser.El
       },
       function(data,status){
-        //alert("Data: " + data + "\nStatus: " + status);
         var event = new Event('signedIn');
+        /* get iframe */
         var iframeWindow = document.getElementById("iframe").contentWindow; 
+        /* dispatch event on iframe object */
         iframeWindow.dispatchEvent(event);
       }).fail( function() {
         console.log( "jQuery post failed" );
@@ -133,51 +138,18 @@ var auth2 = {};
       /* if user has not entered all fields, proceed into here */
       $( '#my-signin2' ).fadeOut(0);
       document.getElementById( "enter" ).style.display='inline';
-      // document.getElementById( "instructions1" ).style.display='none';
+      /* update 1st instruction */
       document.getElementById( "instructions1" ).innerHTML = "Signed In. Pick a connection."
+      /* make 2nd instructions invisible */
       document.getElementById( "instructions2" ).style.display='none';
-      // $("#body").effect("shake");
+      /* update what shows */
       refreshValues(false);
       profile = googleUser.getBasicProfile();
+      /* focus on the host to save user TIME! */
       $("#host").focus();
-      // $("#body").effect("shake");
-      
-      //if field is left blank, highlight in red
- //       if(document.getElementById('host').value == "")
- //      {
- //      	$(document.getElementById('host')).fadeIn().html('').css("border","1px solid red");
- //      }
- //      else
- //      {
-	// $(document.getElementById('host')).fadeIn().html('').css("border", "none");
- //      }
- //      if(document.getElementById('port').value == "")
- //      {
- //        $(document.getElementById('port')).fadeIn().html('').css("border","1px solid red");
- //      }
- //      else
- //      {
-	// $(document.getElementById('port')).fadeIn().html('').css("border", "none");
- //      }
- //      if(document.getElementById('username').value == "")
- //      {
- //        $(document.getElementById('username')).fadeIn().html('').css("border","1px solid red");
- //      }
- //      else
- //      {
- //  	$(document.getElementById('username')).fadeIn().html('').css("border", "none");
- //      }	
- //      if(document.getElementById('password').value == "")
- //      {
- //        $(document.getElementById('password')).fadeIn().html('').css("border","1px solid red");
- //      }
- //      else
- //      {
-	// $(document.getElementById('password')).fadeIn().html('').css("border", "none");
- //      }
-	
-  }
+    }
 
+      /* get request to get the user's connections */
       $.get( 
         "/getConnections",
         { email: profile.getEmail() },
@@ -187,28 +159,32 @@ var auth2 = {};
           if( data ) {
             var host;
             var options = '';
+            /* clear portArray */
             portArray = [];
-            username = [];
+            /* clear usernameArray */
+            usernameArray = [];
+            /* clear hostArray */
             hostArray = [];
+            /* for each connection in response, parse the results into their respective arrays */
             for( i = 0; i < data.length; i++ ) {
-              // console.log(data[i].connections);
+              /* build HTML for list */
               options += '<option value="' + data[i].host + '" />';
               hostArray[i] = data[i].host;
               portArray[i] = data[i].port;
               usernameArray[i] = data[i].username;
             }
+            /* update the connections list with the values */
             document.getElementById( 'connections' ).innerHTML = options;
           }
         }
       ).done( function() {
+          /* get request is done */
           console.log( "jQuery done" );
       })
       .fail( function() {
+          /* get request failed */
           console.log( "jQuery failed" );
       });
-
-
-
     /* update hello message */
 		document.getElementById( 'user' ).innerHTML =  'Hello, ' + profile.getName();
 	}
@@ -219,7 +195,6 @@ $(function() {
   $('#host').on('input',function() {
       if( document.getElementById( 'connections' ).innerHTML.localeCompare('') != 0) {
       var host = document.getElementById( 'host' ).value;
-    // console.log( "input=" + document.getElementById( 'host' ).value );
       var pos = hostArray.indexOf( host );
       if ( typeof portArray[ pos ] === "undefined" ) {
         document.getElementById( 'port' ).value = '';
@@ -245,6 +220,7 @@ $(function() {
     refreshValues( true );
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
+      /* clear text fields */
       document.getElementById( 'host' ).value = "";
       document.getElementById( 'port' ).value = "";
       document.getElementById( 'username' ).value = "";
@@ -261,17 +237,15 @@ $(function() {
       document.getElementById( "instructions1" ).innerHTML = "Enter a new connection..."
 		});
 		}
-			/* called when web app begins */
+		/* called when web app begins */
 		function onLoad() {
-		//refreshing the page undoes red highlighting
-		$(document.getElementById('host')).fadeIn().html('').css("border", "none");
-		$(document.getElementById('port')).fadeIn().html('').css("border", "none");
-		$(document.getElementById('username')).fadeIn().html('').css("border", "none");
-		$(document.getElementById('password')).fadeIn().html('').css("border", "none");
-
-
-			console.log( 'onLoad' );
-			appStart();
+		  /* refreshing the page undoes red highlighting */
+		  $(document.getElementById('host')).fadeIn().html('').css("border", "none");
+		  $(document.getElementById('port')).fadeIn().html('').css("border", "none");
+		  $(document.getElementById('username')).fadeIn().html('').css("border", "none");
+		  $(document.getElementById('password')).fadeIn().html('').css("border", "none");
+      /* start app */
+		  appStart();
 		}
 
 
@@ -331,27 +305,9 @@ var googleUser; // The current user.
  var userChanged = function (user) {
  	console.log('User now: ', user);
  	googleUser = user;
- 	updateGoogleUser();
   // document.getElementById('curr-user-cell').innerText =
     // JSON.stringify(user, undefined, 2);
   };
-
-/**
- * Updates the properties in the Google User table using the current user.
- */
- var updateGoogleUser = function () {
- 	if (googleUser) {
-    // document.getElementById('user-id').innerText = googleUser.getId();
-    // document.getElementById('user-scopes').innerText =
-      // googleUser.getGrantedScopes();
-    // document.getElementById('auth-response').innerText =
-      // JSON.stringify(googleUser.getAuthResponse(), undefined, 2);
-    } else {
-    // document.getElementById('user-id').innerText = '--';
-    // document.getElementById('user-scopes').innerText = '--';
-    // document.getElementById('auth-response').innerText = '--';
-  }
-};
 
 /**
  * Retrieves the current user and signed in states from the GoogleAuth
@@ -359,24 +315,28 @@ var googleUser; // The current user.
  */
  var refreshValues = function( shouldChange ) {
  	if (auth2) {
+    /* let people know we are refreshing values */
  		console.log('Refreshing values...');
-
+    /* get google user */
  		googleUser = auth2.currentUser.get();
 
     if( shouldChange ) {
       if (auth2.isSignedIn.get() == true) {
+        /* user logged in, so go to terminal page */
       	$('.loginWrapper').fadeOut(500);
       	$('.logoutWrapper').fadeIn(500);
         $('#signOutButton').fadeIn(0);
         document.getElementById( "instructions1" ).style.display='none';
         document.getElementById( "instructions2" ).style.display='none';
       } else {
+        /* user not logged in, so go to login page */
       	$( '.logoutWrapper' ).fadeOut(0);
         $( '#signOutButton').fadeOut(0);
       	$( '.loginWrapper' ).fadeIn(50);
         document.getElementById( "instructions1" ).style.display='block';
         document.getElementById( "instructions2" ).style.display='block';
         document.getElementById( "enter" ).style.display='none';
+        /* show Google signin button */
         $('#my-signin2').fadeIn(0);
       }
     } else {
@@ -386,25 +346,10 @@ var googleUser; // The current user.
         $( '#signOutButton').fadeOut(0);
       }
     }
-
-    updateGoogleUser();
     }
   }
 
-  var returnToSelection = function() {
-    console.log('returnToSelection');
-    signOut();
-    // $('.loginWrapper').fadeIn(500);
-    // $('.logoutWrapper').fadeOut(0);
-    // $('#signOutButton').fadeIn(0);
-    // $('.body').getElementById( "enter" ).style.display='inline';
-    // $('#my-signin2').fadeOut(0);
-  }
-
-
-
   /* TODO adjusting box */
-
   var app = angular.module('myApp', ['ngMaterial'])
   .config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
@@ -414,162 +359,22 @@ var googleUser; // The current user.
     .backgroundPalette('light-blue');
   });
 
+/* keypress handler */
 $(document).keypress(function(e) {
   /* enter pressed */
   if( e.which == 13 ) {
-    /* treat this as login */
-    // console.log( 'enter' );
-    $("#my-signin2").focus();
+    /* if signed in, continue */
+    if( document.getElementById( "enter" ).style.display !== 'none' ) {
+      /* treat this as login */
+      $("#enter").click();
+    }
 
   }
 });
-
-    /* md-header */
-
-// angular.module('myApp', ['ngMaterial'])
-// .config(function($mdThemingProvider) {
-//   $mdThemingProvider.theme('default')
-//     .primaryPalette('pink')
-//     .accentPalette('orange');
-// });
-  
-  /* md-header */
-
-
-
-
-// jQuery(document).ready(function($) {
-//     var max = 4;
-//     $('textarea').keypress(function(e) {
-//         console.log( "jQuery: " + e.which );
-//         /* if enter is pressed, prevent the default */
-//         if (e.which == 13) {
-//             console.log( "jQuery: " + e.which );
-//             // e.preventDefault();
-//         } else if (this.value.length > max) {
-//             // Maximum exceeded
-//             // this.value = this.value.substring(0, max);
-//         }
-//     });
-// });
-
-
-/* line to store each line of textarea */
-var line = "";
-
-
-jQuery(function($) {
-  var input = $('#TextArea');
-  input.on('keydown', function() {
-    var key = event.keyCode || event.charCode;
-    if( key == 8 || key == 46 ) {
-        /* backspace was pressed */
-        if( !line ) {
-          return false;
-        } else {
-          line = line.slice( 0, -1 );
-        }
-    }
-  });
-});
-
-
-  /* app controller */
-  app.controller('AppCtrl', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
-
-  $scope.enterPress = function(keyEvent) {
-    if (keyEvent.which === 13) {
-      /* enter pressed */
-      /* print line to console log */
-      console.log( 'line=' + line );
-
-      if( line.localeCompare("clear") == 0 ) {
-        document.getElementById( "TextArea" ).value = prompt;
-        console.log("clear");
-        line = "";
-        return;
-      }
-
-      /* prevent the cursor from moving down */
-      keyEvent.preventDefault();
-      /* instead of default, just tack on a new line before adding the prompt */
-      document.getElementById( "TextArea" ).value += "\n";
-
-      /* reset line */
-      /* get request */
-      console.log(googleUser);
-      console.log( "get:" + line );
-      $.get( 
-        "/get",
-        { line: line,
-          user: googleUser.El },
-        function(data) {
-          /* lag callback result */
-          console.log( data );
-          if( data ) {
-            document.getElementById( "TextArea" ).value += data;
-          }
-        }
-      ).done( function() {
-          console.log( "jQuery done" );
-          document.getElementById("TextArea").value += prompt;
-      })
-      .fail( function() {
-          console.log( "jQuery failed" );
-          document.getElementById("TextArea").value += prompt;
-      });
-      line = "";
-      
-      /* log enter pressed */
-      console.log("enter pressed");
-      /* print prompt to text area */
-      // document.getElementById("TextArea").value += prompt;
-
-    } else {
-      /* convert keyEvent to string */
-      var c = String.fromCharCode( keyEvent.which );
-      /* concatenate string to line */
-      line = line.concat( c );
-    }
-  }
-
-  $scope.autoExpand = function(e) {
-    var element = typeof e === 'object' ? e.target : document.getElementById(e);
-    var scrollHeight = element.scrollHeight - 60; // replace 60 by the sum of padding-top and padding-bottom
-    element.style.height = scrollHeight + "px";
-  };
-
-  $scope.toggleSidenav = function(menuId) {
-    $mdSidenav(menuId).toggle();
-  };
-
-
-  /* md-toolbar */
-  // app.config(function($mdThemingProvider) {
-  //   var customBlueMap = 		$mdThemingProvider.extendPalette('light-blue', {
-  //     'contrastDefaultColor': 'light',
-  //     'contrastDarkColors': ['50'],
-  //     '50': 'ffffff'
-  //   });
-  //   $mdThemingProvider.definePalette('customBlue', customBlueMap);
-  //   $mdThemingProvider.theme('default')
-  //   .primaryPalette('customBlue', {
-  //     'default': '500',
-  //     'hue-1': '50'
-  //   })
-  //   .accentPalette('pink');
-  //   $mdThemingProvider.theme('input', 'default')
-  //   .primaryPalette('grey')
-  // });
-  /* md-toolbar */
-
-  function expand() {
-    $scope.autoExpand('TextArea');
-  }
-}]);
 
 
 
 window.addEventListener('signedOut', function() {
     console.log('signedOut');
   }, false);
+

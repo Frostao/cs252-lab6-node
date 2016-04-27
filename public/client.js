@@ -3,7 +3,6 @@ window.addEventListener('signedIn', function() {
   socket.on('discon', function(data) {
     console.log(data);
     socket.disconnect();
-    // returnToSelection();
   });
   socket.on('connect', function() {
     var term = new Terminal({
